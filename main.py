@@ -10,13 +10,15 @@ from serial import Serial
 __author__ = "bigzhanghao"
 __version__ = "0.1"
 
-class MainWidget(Ui_UsartTool):
+class MainWidget(QtGui.QWidget,Ui_UsartTool):
     def __init__(self,parent=None):
-        super(Ui_UsartTool, self).__init__()
-        self.setupUi(UsartTool)  # 显示主窗口
+        super().__init__(parent)
 
+        self.setupUi(self)  # 显示主窗口
+        self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
+        self.BaudRataComboBox.setCurrentIndex(1)#default 9600
         #serial configuration
-        #self._serial = Serial()
+        self._serial = Serial()
 
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
@@ -27,25 +29,26 @@ class MainWidget(Ui_UsartTool):
     def Switchserial(self):
         #clickstatus = self.pushButton.isChecked() #串口开关状态检查
         if not self.isopen: #如果串口为关闭状态
-            #print("open the serial")
-
             #获得串口参数
             #comread = int(self.label_3.   text())-1 #端口号，计算机端口都是从0开始算的，所以减去1
-
-            bandrate = int(self.BaudRataComboBox.currentIndex()) #波特率
-            #databit = SERIAL_DATABIT_ARRAY[self.shujuwei.currentIndex()] #数据位
-            #stopbit = SERIAL_STOPBIT_ARRAY[self.jiaoyanwei.currentIndex()] #校验位
-            #checkbit = SERIAL_CHECKBIT_ARRAY[self.tingzhiwei.currentIndex()] #停止位
-            print(bandrate)
-
+            baudrate = self._serial.baudrate
+            baudrate = int(self.BaudRataComboBox.currentText()) #波特率
+            bytesize = int(self.DatabitsComboBox.currentText())
+            stopbits = int(self.StopBitsComboBox.currentText())
+            parity = self.ParityComboBox.currentText()
             try:
-                #self._serial = Serial(port="COM1", baudrate=9600,bytesize=8,parity=0,stopbits=1,timeout=0)
-                self._serial = Serial(port="COM1", baudrate=9600,bytesize=8,stopbits=1)
+                #self._serial = Serial(port="COM1", baudrate=9600,bytesize=8,stopbits=1)
+                self._serial.port = "COM1"
+                self._serial.baudrate = baudrate
+                self._serial.bytesize = bytesize
+                self._serial.stopbits = stopbits
+                self._serial.parity = parity
+                self._serial.open()
                 self.isopen = 1
             except:
                 print("open serial fail!")
                 return False
-
+            print(self._serial.isOpen())
             self.SerialNumComboBox.setEnabled(False)
             self.DatabitsComboBox.setEnabled(False)
             self.BaudRataComboBox.setEnabled(False)
@@ -61,7 +64,6 @@ class MainWidget(Ui_UsartTool):
                 self.isopen = 0
             except:
                 print("close the serial fail")
-            print("close the serial")
             self.SerialNumComboBox.setEnabled(True)
             self.DatabitsComboBox.setEnabled(True)
             self.BaudRataComboBox.setEnabled(True)
@@ -72,17 +74,14 @@ class MainWidget(Ui_UsartTool):
     def Send(self):
         if not self.isopen:
             print("请先打开串口")
+            QtGui.QMessageBox.information(self,"Tips","请先打开串口")
             #QtGui.QMessageBox.information(self, "Tips", u"请先打开串口")
             return
         else:
             self.textEdit.setText("send data")
             self._string = "hello python\n"
-            self.a = 'a'
-            #self.hex_ = binascii.b2a_hex(self.a.encode())
-
             try:
-                #self._serial.write(self._string.encode())
-                self._serial.write(self.a.encode())
+                self._serial.write(self._string.encode())
             except:
                 self.DataToSend.setText("send fail")
                 return
@@ -103,9 +102,9 @@ if __name__ == "__main__":
     print(__author__)
     print(__version__)
     app = QtGui.QApplication(sys.argv)
-    UsartTool = QtGui.QDialog()
+
     #ui = Ui_UsartTool()
-    ui = MainWidget(UsartTool)
+    ui = MainWidget()
+    ui.show()
     #ui.setupUi(UsartTool)
-    UsartTool.show()
     sys.exit(app.exec_())
