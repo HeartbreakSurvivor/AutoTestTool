@@ -16,7 +16,6 @@ class MySerial(threading.Thread):
             self.serial.flushInput()
             self.serial.flushOutput()
         except Exception as e:
-
             return False
 
         return True,"success"
@@ -47,4 +46,3 @@ class MySerial(threading.Thread):
                 break
         return data
 
-    def PortList(self):
