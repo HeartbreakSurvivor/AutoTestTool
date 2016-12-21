@@ -79,9 +79,21 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             return
         else:
             self.textEdit.setText("send data")
-            self._string = "hello python\n"
+            self.menu = "is#"
+            self.up = "ic3"
+            self.down = "i?"
+            self.left = "ir$"
+            self.right = "it\""
+            self.source = "iu!"
+            self.power = "iv "
             try:
-                self._serial.write(self._string.encode())
+                self._serial.write(self.menu.encode())
+                self._serial.write(self.up.encode())
+                #self._serial.write(self.down.encode())
+                self._serial.write(self.left.encode())
+                self._serial.write(self.right.encode())
+                self._serial.write(self.source.encode())
+                self._serial.write(self.power.encode())
             except:
                 self.DataToSend.setText("send fail")
                 return
