@@ -24,6 +24,8 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
         self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
+        self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
+        self.HexSendcheckBox.connect(self.HexSendcheckBox, QtCore.SIGNAL('clicked()'), self.SendHex)
         self.isopen = 0
     #actions
     def Switchserial(self):
@@ -73,27 +75,14 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
 
     def Send(self):
         if not self.isopen:
-            print("请先打开串口")
             QtGui.QMessageBox.information(self,"Tips","请先打开串口")
-            #QtGui.QMessageBox.information(self, "Tips", u"请先打开串口")
             return
         else:
-            self.textEdit.setText("send data")
-            self.menu = "is#"
-            self.up = "ic3"
-            self.down = "i?"
-            self.left = "ir$"
-            self.right = "it\""
-            self.source = "iu!"
-            self.power = "iv "
             try:
-                self._serial.write(self.menu.encode())
-                self._serial.write(self.up.encode())
-                #self._serial.write(self.down.encode())
-                self._serial.write(self.left.encode())
-                self._serial.write(self.right.encode())
-                self._serial.write(self.source.encode())
-                self._serial.write(self.power.encode())
+                if not self.HexSendcheckBox.isChecked():
+                    self._serial.write(self.DataToSend.text().encode())
+                else:
+                    print("erro121311r")
             except:
                 self.DataToSend.setText("send fail")
                 return
@@ -108,6 +97,19 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.textEdit.clear()
         self.DataToSend.clear()
         return
+
+    def DisHex(self):
+        if self.HexSendcheckBox.isChecked():
+            print("Dis Hex checked")
+        else:
+            print("Dis Hex no checked")
+
+    def SendHex(self):
+        print(self.DataToSend.text())
+        if self.HexSendcheckBox.isChecked():
+            print("Send Hex checked")
+        else:
+            print("Send Hex no checked")
 
 if __name__ == "__main__":
     print(__name__)
