@@ -6,7 +6,7 @@ from mainboard import Ui_UsartTool
 #from Serial import MySerial
 from PyQt4 import QtCore, QtGui
 from serial import Serial
-from Keyevent import Keyevent
+#from Keyevent import Keyevent
 __author__ = "bigzhanghao"
 __version__ = "0.1"
 
@@ -26,12 +26,17 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         super().__init__(parent)
 
         self.setupUi(self)  # 显示主窗口
-        #self.textEdit.setReadOnly(True)
+        self.textEdit.setReadOnly(True)
         self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
         self.BaudRataComboBox.setCurrentIndex(1)#default 9600
+
+        self.ExitButton.clearFocus()
+        self.MenuButton.focusPolicy()
         #serial configuration
         self._serial = Serial()
-        self._keyevent = Keyevent()
+        #self._keyevent = Keyevent()
+
+        self.myevent = QtCore.QEvent
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
@@ -45,14 +50,14 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.PlusButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.PlusKey)
         #event filter
 
-        self.ExitButton.installEventFilter(self)
+        self.installEventFilter(self)
+        # self.ExitButton.installEventFilter(self)
         # self.MenuButton.installEventFilter(self)
         # self.PlusButton.installEventFilter(self)
         # self.MinusButton.installEventFilter(self)
         # self.FactoryButton.installEventFilter(self)
         # self.SourceButton.installEventFilter(self)
         # self.PowerButton.installEventFilter(self)
-
         self.isopen = 0
     #actions
     def Switchserial(self):
@@ -155,46 +160,66 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self._serial.write("\x69,\x74,\x22".encode())
 
     def eventFilter(self, watched, event):
-        if watched == self.ExitButton or watched == self.MenuButton or watched == self.PlusButton or watched == self.MinusButton:
-            if event.type() == QtCore.QEvent.KeyPress:
-                keyEvent = QtGui.QKeyEvent(event)
-                if keyEvent.key() == QtCore.Qt.Key_Up:
+        #if watched == self.ExitButton or watched == self.MenuButton or watched == self.PlusButton or watched == self.MinusButton:
+        if event.type() == QtCore.QEvent.KeyPress:
+            keyEvent = QtGui.QKeyEvent(event)
+            if self._serial.isOpen():
+                if keyEvent.key() == QtCore.Qt.Key_W:
                     self._serial.write("ic#".encode())
-                if keyEvent.key() == QtCore.Qt.Key_Down:
-                    self._serial.write("ic#".encode())
-                    print("the down key pressed")
-                if keyEvent.key() == QtCore.Qt.Key_Left:
-                    self._serial.write("ic#".encode())
-                    print("the up key pressed")
-                if keyEvent.key() == QtCore.Qt.Key_Right:
-                    self._serial.write("ic#".encode())
-                    print("the down key pressed")
-            if event.type() == QtCore.QEvent.KeyRelease:
-                print("the up key released")
+                    print("the W key pressed")
+                elif keyEvent.key() == QtCore.Qt.Key_S:
+                    self._serial.write("is#".encode())
+                    print("the S key pressed")
+                elif keyEvent.key() == QtCore.Qt.Key_A:
+                    self._serial.write("ir$".encode())
+                    print("the A key pressed")
+                elif keyEvent.key() == QtCore.Qt.Key_D:
+                    self._serial.write("it\"".encode())
+                    print("the D key pressed")
+            else:
+                QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
+
+        if event.type() == QtCore.QEvent.KeyRelease:
+            pass
+            #print("the up key released")
         return QtGui.QWidget.eventFilter(self, watched, event)
 
-    # def keyPressEvent(self, event):
-    #     #if event.modifiers() == QtCore.Qt.ControlModifier:
-    #     if event.key() == QtCore.Qt.Key_Up:
-    #         print("the up key")
-    #     elif event.key() == QtCore.Qt.Key_Down:
-    #         print("the down key")
-    #     elif event.key() == QtCore.Qt.Key_Left:
-    #         print("the left key")
-    #     elif event.key() == QtCore.Qt.Key_Right:
-    #         print("the right key")
-    #     elif event.key() == QtCore.Qt.Key_Home:
-    #         print("the home key")
-    #     #else:
-    #     #    print("what the fuck!")
+    def event(self, QEvent):
+        if QEvent.type() == QtCore.QEvent.KeyPress:
+            if QEvent.key() == QtCore.Qt.Key_Tab:
+                print(" tab key")
+                return True
+            if QEvent.key() == QtCore.Qt.Key_Up:
+                print(" up key")
+                return True
+            if QEvent.key() == QtCore.Qt.Key_Down:
+                print("down key")
+                return True
+        return QtGui.QWidget.event(self,QEvent)
+
+    def keyPressEvent(self, event):
+        if event.modifiers() == QtCore.Qt.ControlModifier:
+            if event.key() == QtCore.Qt.Key_Home:
+                print("the I key")
+            elif event.key() == QtCore.Qt.Key_Down:
+                print("the down key")
+            elif event.key() == QtCore.Qt.Key_Left:
+                print("the left key")
+            elif event.key() == QtCore.Qt.Key_Right:
+                print("the right key")
+            elif event.key() == QtCore.Qt.Key_Home:
+                print("the home key")
+            else:
+               print("what the fuck!")
 
 if __name__ == "__main__":
     print(__name__)
     print(__author__)
     print(__version__)
     app = QtGui.QApplication(sys.argv)
-
+    #app.installEventFilter(app)
     #ui = Ui_UsartTool()
+
     ui = MainWidget()
     ui.show()
     #ui.setupUi(UsartTool)
