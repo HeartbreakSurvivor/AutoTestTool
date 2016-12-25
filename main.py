@@ -6,9 +6,13 @@ from mainboard import Ui_UsartTool
 #from Serial import MySerial
 from PyQt4 import QtCore, QtGui
 from serial import Serial
+import serial.tools.list_ports
+
 #from Keyevent import Keyevent
 __author__ = "bigzhanghao"
 __version__ = "0.1"
+
+
 
 def hexshow(argv):
     result = ''
@@ -30,12 +34,14 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
         self.BaudRataComboBox.setCurrentIndex(1)#default 9600
 
-        self.ExitButton.clearFocus()
-        self.MenuButton.focusPolicy()
+        #for x in port_list:
+        #self.SerialNumComboBox.addItems(port_list)
+        #   print(x)
+
         #serial configuration
         self._serial = Serial()
         #self._keyevent = Keyevent()
-
+        self.GetSerialPorts()
         self.myevent = QtCore.QEvent
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
@@ -60,19 +66,31 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         # self.PowerButton.installEventFilter(self)
         self.isopen = 0
     #actions
+    def GetSerialPorts(self):
+        port_list = list(serial.tools.list_ports.comports())
+        if len(port_list) <= 0:
+            print("Can't find serial port")
+        else:
+            print(port_list.__len__())
+            for x in port_list:
+                print(x.device)
+                self.SerialNumComboBox.addItem(x.device)
+
     def Switchserial(self):
         #clickstatus = self.pushButton.isChecked() #串口开关状态检查
         if not self.isopen: #如果串口为关闭状态
             #获得串口参数
             #comread = int(self.label_3.   text())-1 #端口号，计算机端口都是从0开始算的，所以减去1
-            baudrate = self._serial.baudrate
+            #baudrate = self._serial.baudrate
+            port = self.SerialNumComboBox.currentText()
             baudrate = int(self.BaudRataComboBox.currentText()) #波特率
             bytesize = int(self.DatabitsComboBox.currentText())
             stopbits = int(self.StopBitsComboBox.currentText())
             parity = self.ParityComboBox.currentText()
             try:
                 #self._serial = Serial(port="COM1", baudrate=9600,bytesize=8,stopbits=1)
-                self._serial.port = "COM1"
+                print(port)
+                self._serial.port = port
                 self._serial.baudrate = baudrate
                 self._serial.bytesize = bytesize
                 self._serial.stopbits = stopbits
@@ -80,7 +98,7 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
                 self._serial.open()
                 self.isopen = 1
             except:
-                print("open serial fail!")
+                QtGui.QMessageBox.information(self, "Tips", "串口打开失败，请确认串口号是否被占用")
                 return False
             print(self._serial.isOpen())
             self.SerialNumComboBox.setEnabled(False)

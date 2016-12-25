@@ -221,7 +221,7 @@
     <string>HEX发送</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>11</x>
@@ -242,38 +242,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QComboBox" name="SerialNumComboBox">
-      <item>
-       <property name="text">
-        <string>COM1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>COM2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>COM3</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>COM4</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>COM6</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>COM7</string>
-       </property>
-      </item>
-     </widget>
+     <widget class="QComboBox" name="SerialNumComboBox"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="DataBitsLabel">
@@ -419,7 +388,6 @@
    </layout>
   </widget>
   <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
   <zorder>SwitchButton</zorder>
   <zorder>textEdit</zorder>
   <zorder>DataReceiveArea</zorder>
@@ -427,8 +395,6 @@
   <zorder>SendDataButton</zorder>
   <zorder>ClearDataButton</zorder>
   <zorder>DataToSend</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder></zorder>
   <zorder>HexDisCheckbox</zorder>
   <zorder>MenuButton</zorder>
   <zorder>PowerButton</zorder>
@@ -437,7 +403,7 @@
   <zorder>ExitButton</zorder>
   <zorder>SourceButton</zorder>
   <zorder>FactoryButton</zorder>
-  <zorder></zorder>
+  <zorder>HexSendcheckBox</zorder>
  </widget>
  <tabstops>
   <tabstop>ExitButton</tabstop>
