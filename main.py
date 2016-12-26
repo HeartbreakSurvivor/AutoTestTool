@@ -34,15 +34,9 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
         self.BaudRataComboBox.setCurrentIndex(1)#default 9600
 
-        #for x in port_list:
-        #self.SerialNumComboBox.addItems(port_list)
-        #   print(x)
-
         #serial configuration
         self._serial = Serial()
-        #self._keyevent = Keyevent()
         self.GetSerialPorts()
-        self.myevent = QtCore.QEvent
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
@@ -57,14 +51,12 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         #event filter
 
         self.installEventFilter(self)
-        # self.ExitButton.installEventFilter(self)
-        # self.MenuButton.installEventFilter(self)
-        # self.PlusButton.installEventFilter(self)
-        # self.MinusButton.installEventFilter(self)
-        # self.FactoryButton.installEventFilter(self)
-        # self.SourceButton.installEventFilter(self)
-        # self.PowerButton.installEventFilter(self)
         self.isopen = 0
+
+        #用定时器每个一定时间去扫描有没数据收到，只要在打开串口才开始即使
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.Receive)
+
     #actions
     def GetSerialPorts(self):
         port_list = list(serial.tools.list_ports.comports())
@@ -100,7 +92,8 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             except:
                 QtGui.QMessageBox.information(self, "Tips", "串口打开失败，请确认串口号是否被占用")
                 return False
-            print(self._serial.isOpen())
+            self.timer.start(30)  # 30ms刷新一次界面
+            print("open the serial and timer start")
             self.SerialNumComboBox.setEnabled(False)
             self.DatabitsComboBox.setEnabled(False)
             self.BaudRataComboBox.setEnabled(False)
@@ -116,6 +109,7 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
                 self.isopen = 0
             except:
                 print("close the serial fail")
+            self.timer.stop()
             self.SerialNumComboBox.setEnabled(True)
             self.DatabitsComboBox.setEnabled(True)
             self.BaudRataComboBox.setEnabled(True)
@@ -143,6 +137,40 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.serial.send(data, _type)
         """
 
+    def Receive(self):
+        print("hello")
+        #self.data, self.quit = None, False
+        #if self.isopen:
+        #     while 1:
+        #         data = self._serial.read(1)
+        #         if data == '':
+        #             continue
+        #         while 1:
+        #             n = self.serial.inWaiting()
+        #             if n > 0:
+        #                 data = "%s%s" % (data, self.serial.read(n))
+        #                 print(data)
+        #                 sleep(0.02)  # data is this interval will be merged
+        #             else:
+        #                 quit = True
+        #                 break
+        #         if quit:
+        #             break
+        # return data
+
+    def close(self):
+        if self.serial.isOpen():
+            self.serial.close()
+
+    def run(self):
+        while 1:
+            data = self.Receive()
+            if not data:
+                break
+            self.qtobj.emit(SIGNAL("NewData"), data)
+
+        self.serial.close()
+
     def Clear(self):
         print("clear the window")
         self.textEdit.clear()
@@ -165,17 +193,13 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             print("Send Hex no checked")
 
     def ExitKey(self):
-        print("sdasdas")
-        try:
-            self._serial.write("ic#".encode())
-        except:
-            print("send data fail")
+        self._serial.write("ic#".encode())
     def MenuKey(self):
-        self._serial.write("\x69,\x73,\x23".encode())
+        self._serial.write("is#".encode())
     def MinusKey(self):
-        self._serial.write("\x69,\x72,\x24".encode())
+        self._serial.write("ir$".encode())
     def PlusKey(self):
-        self._serial.write("\x69,\x74,\x22".encode())
+        self._serial.write("it\"".encode())
 
     def eventFilter(self, watched, event):
         #if watched == self.ExitButton or watched == self.MenuButton or watched == self.PlusButton or watched == self.MinusButton:
