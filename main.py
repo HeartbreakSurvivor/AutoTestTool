@@ -2,6 +2,9 @@
 #-*- coding: utf-8 -*-
 
 import sys,binascii
+import importlib
+importlib.reload(sys)
+
 from mainboard import Ui_UsartTool
 #from Serial import MySerial
 from PyQt4 import QtCore, QtGui
@@ -11,7 +14,6 @@ import serial.tools.list_ports
 #from Keyevent import Keyevent
 __author__ = "bigzhanghao"
 __version__ = "0.1"
-
 
 
 def hexshow(argv):
@@ -138,25 +140,25 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         """
 
     def Receive(self):
-        print("hello")
-        #self.data, self.quit = None, False
-        #if self.isopen:
-        #     while 1:
-        #         data = self._serial.read(1)
-        #         if data == '':
-        #             continue
-        #         while 1:
-        #             n = self.serial.inWaiting()
-        #             if n > 0:
-        #                 data = "%s%s" % (data, self.serial.read(n))
-        #                 print(data)
-        #                 sleep(0.02)  # data is this interval will be merged
-        #             else:
-        #                 quit = True
-        #                 break
-        #         if quit:
-        #             break
-        # return data
+        if self.isopen:
+            try:
+                bytesToRead = self._serial.inWaiting()
+            except:
+                bytesToRead = 0
+                self.Switchserial()
+                print("error ")
+            if bytesToRead > 0:
+                self.recstr = self._serial.read(bytesToRead)
+                #self.textEdit.append(self.recstr.decode(encoding='utf-8'))
+                self.textEdit.append(self.recstr.decode(encoding='gbk'))
+                #self.textEdit.append((str)(hexshow(self.recstr)))
+                if self.textEdit.toPlainText().__len__() > 10000:
+                    bytesToRead = 0
+                    self.textEdit.clear()
+            else:
+                pass
+        else:
+            pass
 
     def close(self):
         if self.serial.isOpen():
