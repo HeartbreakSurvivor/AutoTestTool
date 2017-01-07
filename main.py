@@ -15,7 +15,6 @@ import serial.tools.list_ports
 __author__ = "bigzhanghao"
 __version__ = "0.1"
 
-
 def hexshow(argv):
     result = ''
     hLen = len(argv)
@@ -23,9 +22,8 @@ def hexshow(argv):
         hvol = ord(argv[i])
         hhex = '%02x'%hvol
         result += hhex + ' '
-        print("hexshow: ", result)
+        #print("hexshow: ", result)
     return result
-
 
 class MainWidget(QtGui.QWidget,Ui_UsartTool):
     def __init__(self,parent=None):
@@ -59,6 +57,7 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.Receive)
 
+        self._str = ""
     #actions
     def GetSerialPorts(self):
         port_list = list(serial.tools.list_ports.comports())
@@ -103,9 +102,7 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             self.ParityComboBox.setEnabled(False)
             self.SwitchButton.setText("关闭串口")
             #打开串口
-        else:   #关闭串口、使能各个窗口
-            #self._serial.close()
-            #self.timer.stop()
+        else:
             try:
                 self._serial.close()
                 self.isopen = 0
@@ -152,8 +149,10 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
                 #self.textEdit.append(self.recstr.decode(encoding='utf-8'))
                 self.textEdit.append(self.recstr.decode(encoding='gbk'))
                 #self.textEdit.append((str)(hexshow(self.recstr)))
+                self._str = self.textEdit.toPlainText()
                 if self.textEdit.toPlainText().__len__() > 10000:
                     bytesToRead = 0
+                    self._str = ""
                     self.textEdit.clear()
             else:
                 pass
@@ -164,28 +163,20 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         if self.serial.isOpen():
             self.serial.close()
 
-    def run(self):
-        while 1:
-            data = self.Receive()
-            if not data:
-                break
-            self.qtobj.emit(SIGNAL("NewData"), data)
-
-        self.serial.close()
-
     def Clear(self):
-        print("clear the window")
+        self._str = ""
         self.textEdit.clear()
         self.DataToSend.clear()
         return
 
     def DisHex(self):
         if self.HexDisCheckbox.isChecked():#check
-            temphex = hexshow(self.textEdit.toPlainText())
+            temphex = hexshow(self._str)
             self.textEdit.clear()
             self.textEdit.setText(temphex)
         else:#cancel check
-            print("Dis Hex no checked")
+            self.textEdit.clear()
+            self.textEdit.setText(self._str)
 
     def SendHex(self):
         self.DataToSend.clear()
@@ -210,16 +201,12 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             if self._serial.isOpen():
                 if keyEvent.key() == QtCore.Qt.Key_W:
                     self._serial.write("ic#".encode())
-                    print("the W key pressed")
                 elif keyEvent.key() == QtCore.Qt.Key_S:
                     self._serial.write("is#".encode())
-                    print("the S key pressed")
                 elif keyEvent.key() == QtCore.Qt.Key_A:
                     self._serial.write("ir$".encode())
-                    print("the A key pressed")
                 elif keyEvent.key() == QtCore.Qt.Key_D:
                     self._serial.write("it\"".encode())
-                    print("the D key pressed")
             else:
                 QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
 
@@ -227,34 +214,6 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             pass
             #print("the up key released")
         return QtGui.QWidget.eventFilter(self, watched, event)
-
-    def event(self, QEvent):
-        if QEvent.type() == QtCore.QEvent.KeyPress:
-            if QEvent.key() == QtCore.Qt.Key_Tab:
-                print(" tab key")
-                return True
-            if QEvent.key() == QtCore.Qt.Key_Up:
-                print(" up key")
-                return True
-            if QEvent.key() == QtCore.Qt.Key_Down:
-                print("down key")
-                return True
-        return QtGui.QWidget.event(self,QEvent)
-
-    def keyPressEvent(self, event):
-        if event.modifiers() == QtCore.Qt.ControlModifier:
-            if event.key() == QtCore.Qt.Key_Home:
-                print("the I key")
-            elif event.key() == QtCore.Qt.Key_Down:
-                print("the down key")
-            elif event.key() == QtCore.Qt.Key_Left:
-                print("the left key")
-            elif event.key() == QtCore.Qt.Key_Right:
-                print("the right key")
-            elif event.key() == QtCore.Qt.Key_Home:
-                print("the home key")
-            else:
-               print("what the fuck!")
 
 if __name__ == "__main__":
     print(__name__)
