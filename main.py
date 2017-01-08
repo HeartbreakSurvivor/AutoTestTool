@@ -48,6 +48,9 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.MenuButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.MenuKey)
         self.MinusButton.connect(self.MinusButton,QtCore.SIGNAL('clicked()'),self.MinusKey)
         self.PlusButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.PlusKey)
+        self.PowerButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.PowerKey)
+        self.SourceButton.connect(self.MinusButton,QtCore.SIGNAL('clicked()'),self.SourceKey)
+        self.FactoryButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
         #event filter
 
         self.installEventFilter(self)
@@ -147,13 +150,24 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             if bytesToRead > 0:
                 self.recstr = self._serial.read(bytesToRead)
                 #self.textEdit.append(self.recstr.decode(encoding='utf-8'))
-                self.textEdit.append(self.recstr.decode(encoding='gbk'))
-                #self.textEdit.append((str)(hexshow(self.recstr)))
-                self._str = self.textEdit.toPlainText()
-                if self.textEdit.toPlainText().__len__() > 10000:
+                self._str +=(self.recstr.decode(encoding='gbk'))
+
+                #self.textEdit.append(self.recstr.decode(encoding='gbk'))
+                #self.textEdit.insertPlainText(self.recstr.decode(encoding='gbk'))
+
+                #self._str = self.textEdit.toPlainText()
+
+                #if self.textEdit.toPlainText().__len__() > 10000:
+                if self._str.__len__() > 10000:
                     bytesToRead = 0
                     self._str = ""
                     self.textEdit.clear()
+
+                if self.HexDisCheckbox.isChecked():
+                    temphex = hexshow(self._str)
+                    self.textEdit.setText(temphex)
+                else:
+                    self.textEdit.setText(self._str)
             else:
                 pass
         else:
@@ -193,9 +207,14 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self._serial.write("ir$".encode())
     def PlusKey(self):
         self._serial.write("it\"".encode())
+    def PowerKey(self):
+        self._serial.write("iv ".encode())
+    def SourceKey(self):
+        self._serial.write("iu".encode())
+    def FactoryKey(self):
+        self._serial.write("i ".encode())
 
     def eventFilter(self, watched, event):
-        #if watched == self.ExitButton or watched == self.MenuButton or watched == self.PlusButton or watched == self.MinusButton:
         if event.type() == QtCore.QEvent.KeyPress:
             keyEvent = QtGui.QKeyEvent(event)
             if self._serial.isOpen():
@@ -207,9 +226,14 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
                     self._serial.write("ir$".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_D:
                     self._serial.write("it\"".encode())
+                elif keyEvent.key() == QtCore.Qt.Key_Z:
+                    self._serial.write("iv ".encode())
+                elif keyEvent.key() == QtCore.Qt.Key_X:
+                    self._serial.write("iu".encode())
+                elif keyEvent.key() == QtCore.Qt.Key_C:
+                    self._serial.write("i ".encode())
             else:
                 QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
-
         if event.type() == QtCore.QEvent.KeyRelease:
             pass
             #print("the up key released")
