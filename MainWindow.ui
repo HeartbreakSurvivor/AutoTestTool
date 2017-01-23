@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="SwitchButton">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>100</y>
+      <width>655</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开串口</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAsdasd">
+    <property name="title">
+     <string>COM Port</string>
+    </property>
+    <widget class="QMenu" name="menuBaudRates">
+     <property name="title">
+      <string>BaudRates</string>
+     </property>
+     <addaction name="action4800"/>
+     <addaction name="action9600"/>
+     <addaction name="action57600"/>
+     <addaction name="action115200"/>
+    </widget>
+    <addaction name="actionAsdasd"/>
+    <addaction name="menuBaudRates"/>
+    <addaction name="actionAsdasdqq23e12"/>
+    <addaction name="actionStop_Bits"/>
+    <addaction name="actionParity"/>
+   </widget>
+   <widget class="QMenu" name="menuKey_Edit">
+    <property name="title">
+     <string>Key Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSelect">
+    <property name="title">
+     <string>select</string>
+    </property>
+    <addaction name="actionMstar_9570S"/>
+   </widget>
+   <addaction name="menuSelect"/>
+   <addaction name="menuAsdasd"/>
+   <addaction name="menuKey_Edit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAsdasd">
+   <property name="text">
+    <string>ComPort</string>
+   </property>
+  </action>
+  <action name="actionAsdasdqq23e12">
+   <property name="text">
+    <string>Data Bits</string>
+   </property>
+  </action>
+  <action name="actionStop_Bits">
+   <property name="text">
+    <string>Stop Bits</string>
+   </property>
+  </action>
+  <action name="actionParity">
+   <property name="text">
+    <string>Parity</string>
+   </property>
+  </action>
+  <action name="action4800">
+   <property name="text">
+    <string>4800</string>
+   </property>
+  </action>
+  <action name="action9600">
+   <property name="text">
+    <string>9600</string>
+   </property>
+  </action>
+  <action name="action57600">
+   <property name="text">
+    <string>57600</string>
+   </property>
+  </action>
+  <action name="action115200">
+   <property name="text">
+    <string>115200</string>
+   </property>
+  </action>
+  <action name="actionMstar_9570S">
+   <property name="text">
+    <string>Mstar 9570S</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
