@@ -6,25 +6,235 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>644</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="SwitchButton">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>100</y>
-      <width>655</width>
-      <height>23</height>
+      <x>10</x>
+      <y>340</y>
+      <width>621</width>
+      <height>82</height>
      </rect>
     </property>
-    <property name="text">
-     <string>打开串口</string>
+    <layout class="QVBoxLayout" name="verticalLayout_10">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="DataToSend"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SendDataButton">
+         <property name="text">
+          <string>发送</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="ExitButton">
+           <property name="text">
+            <string>Exit</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorA">
+           <property name="text">
+            <string>W</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="MinusButton">
+           <property name="text">
+            <string>Minus</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorB">
+           <property name="text">
+            <string>A</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QPushButton" name="PlusButton">
+           <property name="text">
+            <string>Plus</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorC">
+           <property name="text">
+            <string>D</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QPushButton" name="MenuButton">
+           <property name="text">
+            <string>Menu</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorD">
+           <property name="text">
+            <string>S</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QPushButton" name="PowerButton">
+           <property name="text">
+            <string>Power</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorE">
+           <property name="text">
+            <string>Z</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QPushButton" name="SourceButton">
+           <property name="text">
+            <string>Source</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorF">
+           <property name="text">
+            <string>X</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QPushButton" name="FactoryButton">
+           <property name="text">
+            <string>Factory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="KeyIndicatorG">
+           <property name="text">
+            <string>C</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QPushButton" name="ClearDataButton">
+           <property name="text">
+            <string>清除</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="HexDisCheckbox">
+           <property name="text">
+            <string>HEX显示</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <widget class="QPushButton" name="SaveDataButton">
+           <property name="text">
+            <string>保存</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="HexSendcheckBox_2">
+           <property name="text">
+            <string>HEX发送</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>621</width>
+      <height>321</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -33,8 +243,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>23</height>
+     <width>644</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAsdasd">
@@ -50,11 +260,38 @@
      <addaction name="action57600"/>
      <addaction name="action115200"/>
     </widget>
-    <addaction name="actionAsdasd"/>
+    <widget class="QMenu" name="menuData_Bits">
+     <property name="title">
+      <string>Data Bits</string>
+     </property>
+     <addaction name="action5"/>
+     <addaction name="action6"/>
+     <addaction name="action7"/>
+     <addaction name="action8"/>
+    </widget>
+    <widget class="QMenu" name="menuStop_Bits">
+     <property name="title">
+      <string>Stop Bits</string>
+     </property>
+     <addaction name="action1"/>
+     <addaction name="action1_5"/>
+     <addaction name="action3"/>
+    </widget>
+    <widget class="QMenu" name="menuParity">
+     <property name="title">
+      <string>Parity</string>
+     </property>
+     <addaction name="actionNone"/>
+     <addaction name="actionOdd"/>
+     <addaction name="actionEven"/>
+     <addaction name="actionMark"/>
+     <addaction name="actionSpace"/>
+    </widget>
+    <addaction name="menuComport"/>
     <addaction name="menuBaudRates"/>
-    <addaction name="actionAsdasdqq23e12"/>
-    <addaction name="actionStop_Bits"/>
-    <addaction name="actionParity"/>
+    <addaction name="menuData_Bits"/>
+    <addaction name="menuStop_Bits"/>
+    <addaction name="menuParity"/>
    </widget>
    <widget class="QMenu" name="menuKey_Edit">
     <property name="title">
@@ -63,33 +300,19 @@
    </widget>
    <widget class="QMenu" name="menuSelect">
     <property name="title">
-     <string>select</string>
+     <string>Chip Select</string>
     </property>
     <addaction name="actionMstar_9570S"/>
+    <addaction name="actionRealTek"/>
    </widget>
    <addaction name="menuSelect"/>
    <addaction name="menuAsdasd"/>
    <addaction name="menuKey_Edit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionAsdasd">
+  <action name="menuComport">
    <property name="text">
     <string>ComPort</string>
-   </property>
-  </action>
-  <action name="actionAsdasdqq23e12">
-   <property name="text">
-    <string>Data Bits</string>
-   </property>
-  </action>
-  <action name="actionStop_Bits">
-   <property name="text">
-    <string>Stop Bits</string>
-   </property>
-  </action>
-  <action name="actionParity">
-   <property name="text">
-    <string>Parity</string>
    </property>
   </action>
   <action name="action4800">
@@ -114,7 +337,72 @@
   </action>
   <action name="actionMstar_9570S">
    <property name="text">
-    <string>Mstar 9570S</string>
+    <string>Mstar</string>
+   </property>
+  </action>
+  <action name="actionRealTek">
+   <property name="text">
+    <string>RealTek</string>
+   </property>
+  </action>
+  <action name="action5">
+   <property name="text">
+    <string>5</string>
+   </property>
+  </action>
+  <action name="action6">
+   <property name="text">
+    <string>6</string>
+   </property>
+  </action>
+  <action name="action7">
+   <property name="text">
+    <string>7</string>
+   </property>
+  </action>
+  <action name="action8">
+   <property name="text">
+    <string>8</string>
+   </property>
+  </action>
+  <action name="action1">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action1_5">
+   <property name="text">
+    <string>1.5</string>
+   </property>
+  </action>
+  <action name="action3">
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="actionNone">
+   <property name="text">
+    <string>None</string>
+   </property>
+  </action>
+  <action name="actionOdd">
+   <property name="text">
+    <string>Odd</string>
+   </property>
+  </action>
+  <action name="actionEven">
+   <property name="text">
+    <string>Even</string>
+   </property>
+  </action>
+  <action name="actionMark">
+   <property name="text">
+    <string>Mark</string>
+   </property>
+  </action>
+  <action name="actionSpace">
+   <property name="text">
+    <string>Space</string>
    </property>
   </action>
  </widget>
