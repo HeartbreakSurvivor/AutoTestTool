@@ -11,6 +11,7 @@ class command(object):
 
 class MinusCommand(command):
     def exec(self):
+        self._serial = "asd"
         print("this is Minus command")
 
 class PlusCommand(command):
@@ -21,3 +22,18 @@ class PowerCommand(command):
     def exec(self):
         print("this is Power command")
 
+class MeunCommand(command):
+    def exec(self):
+        print("this is Menu command")
+
+class ExitCommand(command):
+    def exec(self):
+        print("this is Exit Command")
+
+class FactoryCommand(command):
+    def exec(self):
+        print("this is factory command")
+
+class SourceCommand(command):
+    def exec(self):
+        print("this is Source command")
