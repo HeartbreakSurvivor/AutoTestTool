@@ -6,10 +6,13 @@ import importlib
 importlib.reload(sys)
 
 from mainboard import Ui_UsartTool
-#from Serial import MySerial
 from PyQt4 import QtCore, QtGui
 from serial import Serial
 import serial.tools.list_ports
+
+from MySerial import MySerial
+import KeyMsg
+import keyedit
 
 #from Keyevent import Keyevent
 __author__ = "bigzhanghao"
@@ -35,7 +38,8 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.BaudRataComboBox.setCurrentIndex(1)#default 9600
 
         #serial configuration
-        self._serial = Serial()
+        #self._serial = Serial()
+        self._serial = MySerial()
         self.GetSerialPorts()
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
@@ -63,14 +67,13 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self._str = ""
     #actions
     def GetSerialPorts(self):
-        port_list = list(serial.tools.list_ports.comports())
-        if len(port_list) <= 0:
-            print("Can't find serial port")
-        else:
-            print(port_list.__len__())
+        port_list = self._serial.GetSerialPorts()
+        if len(port_list):
             for x in port_list:
-                print(x.device)
                 self.SerialNumComboBox.addItem(x.device)
+        else:
+            print("Can't find serial port")
+            pass
 
     def Switchserial(self):
         #clickstatus = self.pushButton.isChecked() #串口开关状态检查

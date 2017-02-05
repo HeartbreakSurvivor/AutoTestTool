@@ -7,14 +7,202 @@
     <x>0</x>
     <y>0</y>
     <width>763</width>
-    <height>547</height>
+    <height>501</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="6" column="0" colspan="2">
+   <item row="1" column="1">
+    <widget class="QLabel" name="DataReceiveArea">
+     <property name="text">
+      <string>数据接收区域：</string>
+     </property>
+     <property name="buddy">
+      <cstring>textEdit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="SwitchButton">
+     <property name="text">
+      <string>打开串口</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QTextEdit" name="textEdit"/>
+   </item>
+   <item row="1" column="0" rowspan="2">
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="SerialnumLabel">
+       <property name="text">
+        <string>串口号：</string>
+       </property>
+       <property name="buddy">
+        <cstring>SerialNumComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="SerialNumComboBox"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="DataBitsLabel">
+       <property name="text">
+        <string>数据位：</string>
+       </property>
+       <property name="buddy">
+        <cstring>DatabitsComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="DatabitsComboBox">
+       <item>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>8</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="BaudRateLabel">
+       <property name="text">
+        <string>波特率：</string>
+       </property>
+       <property name="buddy">
+        <cstring>BaudRataComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="BaudRataComboBox">
+       <item>
+        <property name="text">
+         <string>4800</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>9600</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>19200</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>57600</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>115200</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="StopBitsLabel">
+       <property name="text">
+        <string>停止位：</string>
+       </property>
+       <property name="buddy">
+        <cstring>StopBitsComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="StopBitsComboBox">
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1.5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="ParityLabel">
+       <property name="text">
+        <string>奇偶校验位：</string>
+       </property>
+       <property name="buddy">
+        <cstring>ParityComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="ParityComboBox">
+       <item>
+        <property name="text">
+         <string>N</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>O</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>E</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>M</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>S</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>GroupBox</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout_10">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -219,238 +407,10 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0" rowspan="2">
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="SerialnumLabel">
-       <property name="text">
-        <string>串口号：</string>
-       </property>
-       <property name="buddy">
-        <cstring>SerialNumComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="SerialNumComboBox"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="DataBitsLabel">
-       <property name="text">
-        <string>数据位：</string>
-       </property>
-       <property name="buddy">
-        <cstring>DatabitsComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="DatabitsComboBox">
-       <item>
-        <property name="text">
-         <string>5</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>6</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>7</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>8</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="BaudRateLabel">
-       <property name="text">
-        <string>波特率：</string>
-       </property>
-       <property name="buddy">
-        <cstring>BaudRataComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="BaudRataComboBox">
-       <item>
-        <property name="text">
-         <string>4800</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>9600</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>19200</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>57600</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>115200</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="StopBitsLabel">
-       <property name="text">
-        <string>停止位：</string>
-       </property>
-       <property name="buddy">
-        <cstring>StopBitsComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="StopBitsComboBox">
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>1.5</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="ParityLabel">
-       <property name="text">
-        <string>奇偶校验位：</string>
-       </property>
-       <property name="buddy">
-        <cstring>ParityComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QComboBox" name="ParityComboBox">
-       <item>
-        <property name="text">
-         <string>N</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>O</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>E</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>M</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>S</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Tab 1</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Tab 2</string>
-      </attribute>
-     </widget>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="DataReceiveArea">
-     <property name="text">
-      <string>数据接收区域：</string>
-     </property>
-     <property name="buddy">
-      <cstring>textEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QPushButton" name="SwitchButton">
-     <property name="text">
-      <string>打开串口</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QTextEdit" name="textEdit"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>GroupBox</string>
-     </property>
-    </widget>
-   </item>
   </layout>
   <zorder>textEdit</zorder>
-  <zorder>layoutWidget</zorder>
   <zorder>SwitchButton</zorder>
   <zorder>DataReceiveArea</zorder>
-  <zorder>SendDataButton</zorder>
-  <zorder>ClearDataButton</zorder>
-  <zorder>DataToSend</zorder>
-  <zorder>HexDisCheckbox</zorder>
-  <zorder>MenuButton</zorder>
-  <zorder>PowerButton</zorder>
-  <zorder>PlusButton</zorder>
-  <zorder>MinusButton</zorder>
-  <zorder>ExitButton</zorder>
-  <zorder>SourceButton</zorder>
-  <zorder>FactoryButton</zorder>
-  <zorder>HexSendcheckBox</zorder>
-  <zorder>KeyIndicatorA</zorder>
-  <zorder>KeyIndicatorB</zorder>
-  <zorder>KeyIndicatorC</zorder>
-  <zorder>KeyIndicatorD</zorder>
-  <zorder>KeyIndicatorE</zorder>
-  <zorder>KeyIndicatorF</zorder>
-  <zorder>KeyIndicatorG</zorder>
-  <zorder>SaveDataButton</zorder>
-  <zorder>HexSendcheckBox_2</zorder>
-  <zorder>tabWidget</zorder>
   <zorder>groupBox</zorder>
  </widget>
  <tabstops>
