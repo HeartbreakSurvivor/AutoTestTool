@@ -11,11 +11,12 @@ class command(object):
 
 class MinusCommand(command):
     def exec(self):
-        self._serial = "asd"
+        self._serial.send("this is Minus command")
         print("this is Minus command")
 
 class PlusCommand(command):
     def exec(self):
+        self._serial.send("this is Plus command")
         print("this is Plus Command")
 
 class PowerCommand(command):

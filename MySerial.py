@@ -1,21 +1,18 @@
 from serial import Serial
 import serial.tools.list_ports
 
-class MySerial(object):
+class MySerial(Serial):
     def __init__(self):
-        self.serial = Serial()
+        super(MySerial,self).__init__()
+        #self.serial = Serial()
 
     #actions
     def GetSerialPorts(self):
         port_list = list(serial.tools.list_ports.comports())#local variable
         return port_list
 
-    def open(self,settings):
-        self.serial.open()
-
-    def close(self):
-        self.serial.close()
-
     def send(self,data):
-        self.serial.write(data)
+        """the child class call the methond delcare in the father class """
+        #Serial.write(self,data)  #1
+        super(MySerial,self).write(data)  #2
 

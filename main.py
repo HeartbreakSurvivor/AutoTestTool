@@ -11,8 +11,11 @@ from serial import Serial
 import serial.tools.list_ports
 
 from MySerial import MySerial
+from Command import *
+
 import KeyMsg
 import keyedit
+
 
 #from Keyevent import Keyevent
 __author__ = "bigzhanghao"
@@ -37,10 +40,6 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
         self.BaudRataComboBox.setCurrentIndex(1)#default 9600
 
-        #serial configuration
-        #self._serial = Serial()
-        self._serial = MySerial()
-        self.GetSerialPorts()
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
@@ -57,6 +56,17 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.FactoryButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
         #event filter
 
+        #serial configuration
+        #self._serial = Serial()
+        self._serial = MySerial()
+        self.GetSerialPorts()
+
+        #Command pattern
+        #Create the commands
+        MeunCommand(self._serial)
+        ExitCommand(self._serial)
+        PowerCommand(self._serial)
+
         self.installEventFilter(self)
         self.isopen = 0
 
@@ -65,6 +75,17 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.timer.timeout.connect(self.Receive)
 
         self._str = ""
+        #private variable
+        self.__CommandList = []
+
+    #add new command to the command list
+    def SetCommands(self,Command):
+        self.__CommandList.append(Command)
+    #invoker execute the command
+    def Execute(self,Command):
+        self.__CommandList[0].exec()
+
+
     #actions
     def GetSerialPorts(self):
         port_list = self._serial.GetSerialPorts()
@@ -130,9 +151,9 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             try:
                 if not self.HexSendcheckBox.isChecked():
                     #hexer = list(self.DataToSend.text())
-                    self._serial.write(self.DataToSend.text().encode())
+                    self._serial.send(self.DataToSend.text().encode())
                 else:
-                    self._serial.write(self.DataToSend.text().encode())
+                    self._serial.send(self.DataToSend.text().encode())
             except:
                 print("send data fail")
                 return
@@ -203,38 +224,38 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             print("Send Hex no checked")
 
     def ExitKey(self):
-        self._serial.write("ic#".encode())
+        self._serial.send("ic#".encode())
     def MenuKey(self):
-        self._serial.write("is#".encode())
+        self._serial.send("is#".encode())
     def MinusKey(self):
-        self._serial.write("ir$".encode())
+        self._serial.send("ir$".encode())
     def PlusKey(self):
-        self._serial.write("it\"".encode())
+        self._serial.send("it\"".encode())
     def PowerKey(self):
-        self._serial.write("iv ".encode())
+        self._serial.send("iv ".encode())
     def SourceKey(self):
-        self._serial.write("iu".encode())
+        self._serial.send("iu".encode())
     def FactoryKey(self):
-        self._serial.write("i ".encode())
+        self._serial.send("i ".encode())
 
     def eventFilter(self, watched, event):
         if event.type() == QtCore.QEvent.KeyPress:
             keyEvent = QtGui.QKeyEvent(event)
             if self._serial.isOpen():
                 if keyEvent.key() == QtCore.Qt.Key_W:
-                    self._serial.write("ic#".encode())
+                    self._serial.send("ic#".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_S:
-                    self._serial.write("is#".encode())
+                    self._serial.send("is#".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_A:
-                    self._serial.write("ir$".encode())
+                    self._serial.send("ir$".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_D:
-                    self._serial.write("it\"".encode())
+                    self._serial.send("it\"".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_Z:
-                    self._serial.write("iv ".encode())
+                    self._serial.send("iv ".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_X:
-                    self._serial.write("iu".encode())
+                    self._serial.send("iu".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_C:
-                    self._serial.write("i ".encode())
+                    self._serial.send("i ".encode())
             else:
                 QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
         if event.type() == QtCore.QEvent.KeyRelease:
