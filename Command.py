@@ -6,35 +6,37 @@ class command(object):
 
     __metaclass__ = ABCMeta
     @abstractmethod
-    def exec(self):
+    def execute(self):
         pass
 
 class MinusCommand(command):
-    def exec(self):
-        self._serial.send("this is Minus command")
-        print("this is Minus command")
+    def execute(self):
+        self._serial.send("ir$".encode())
 
 class PlusCommand(command):
-    def exec(self):
-        self._serial.send("this is Plus command")
-        print("this is Plus Command")
+    def execute(self):
+        self._serial.send("it\"".encode())
 
 class PowerCommand(command):
-    def exec(self):
+    def execute(self):
         print("this is Power command")
 
 class MeunCommand(command):
-    def exec(self):
-        print("this is Menu command")
+    def execute(self):
+        self._serial.send("is#".encode())
 
 class ExitCommand(command):
-    def exec(self):
-        print("this is Exit Command")
+    def execute(self):
+        self._serial.send("ic#".encode())
+
+class EcoCommand(command):
+    def execute(self):
+        print("this is Eco command")
 
 class FactoryCommand(command):
-    def exec(self):
+    def execute(self):
         print("this is factory command")
 
 class SourceCommand(command):
-    def exec(self):
+    def execute(self):
         print("this is Source command")

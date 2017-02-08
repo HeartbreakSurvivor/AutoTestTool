@@ -35,6 +35,8 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
     def __init__(self,parent=None):
         super().__init__(parent)
 
+        self.__CommandList = []
+
         self.setupUi(self)  # 显示主窗口
         self.textEdit.setReadOnly(True)
         self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
@@ -63,9 +65,23 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
 
         #Command pattern
         #Create the commands
-        MeunCommand(self._serial)
-        ExitCommand(self._serial)
-        PowerCommand(self._serial)
+        self.__MenuCmd = MeunCommand(self._serial)
+        self.__ExitCmd = ExitCommand(self._serial)
+        self.__PowerCmd = PowerCommand(self._serial)
+        self.__PlusCmd = PlusCommand(self._serial)
+        self.__MinusCmd = MinusCommand(self._serial)
+        self.__EcoCmd = EcoCommand(self._serial)
+        self.__SourceCmd = SourceCommand(self._serial)
+        self.__FactoryCmd = FactoryCommand(self._serial)
+
+        self.SetCommands(self.__MenuCmd)
+        self.SetCommands(self.__MinusCmd)
+        self.SetCommands(self.__ExitCmd)
+        self.SetCommands(self.__PowerCmd)
+        self.SetCommands(self.__PlusCmd)
+        self.SetCommands(self.__EcoCmd)
+        self.SetCommands(self.__SourceCmd)
+        self.SetCommands(self.__FactoryCmd)
 
         self.installEventFilter(self)
         self.isopen = 0
@@ -76,14 +92,18 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
 
         self._str = ""
         #private variable
-        self.__CommandList = []
 
     #add new command to the command list
     def SetCommands(self,Command):
         self.__CommandList.append(Command)
+
     #invoker execute the command
     def Execute(self,Command):
-        self.__CommandList[0].exec()
+        if Command in self.__CommandList:
+            Idx = self.__CommandList.index(Command)
+            print(Idx)
+            #Command.execute(self)
+            self.__CommandList[Idx].execute()
 
 
     #actions
@@ -224,32 +244,32 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             print("Send Hex no checked")
 
     def ExitKey(self):
-        self._serial.send("ic#".encode())
+        self.Execute(self.__ExitCmd)
     def MenuKey(self):
-        self._serial.send("is#".encode())
+        self.Execute(self.__MenuCmd)
     def MinusKey(self):
-        self._serial.send("ir$".encode())
+        self.Execute(self.__MinusCmd)
     def PlusKey(self):
-        self._serial.send("it\"".encode())
+        self.Execute(self.__PlusCmd)
     def PowerKey(self):
-        self._serial.send("iv ".encode())
+        self.Execute(self.__PowerCmd)
     def SourceKey(self):
-        self._serial.send("iu".encode())
+        self.Execute(self.__SourceCmd)
     def FactoryKey(self):
-        self._serial.send("i ".encode())
+        self.Execute(self.__FactoryCmd)
 
     def eventFilter(self, watched, event):
         if event.type() == QtCore.QEvent.KeyPress:
             keyEvent = QtGui.QKeyEvent(event)
             if self._serial.isOpen():
                 if keyEvent.key() == QtCore.Qt.Key_W:
-                    self._serial.send("ic#".encode())
+                    self.Execute(self.__ExitCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_S:
-                    self._serial.send("is#".encode())
+                    self.Execute(self.__MenuCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_A:
-                    self._serial.send("ir$".encode())
+                    self.Execute(self.__MinusCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_D:
-                    self._serial.send("it\"".encode())
+                    self.Execute(self.__PlusCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_Z:
                     self._serial.send("iv ".encode())
                 elif keyEvent.key() == QtCore.Qt.Key_X:
