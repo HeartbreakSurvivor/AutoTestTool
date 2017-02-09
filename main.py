@@ -13,13 +13,23 @@ import serial.tools.list_ports
 from MySerial import MySerial
 from Command import *
 
-import KeyMsg
+from KeyMsg import KeyMsg
 import keyedit
 
 
 #from Keyevent import Keyevent
 __author__ = "bigzhanghao"
 __version__ = "0.1"
+
+global Keymsg_1 , Keymsg_2 , Keymsg_3 , Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
+Keymsg_1 = KeyMsg()
+Keymsg_2 = KeyMsg()
+Keymsg_3 = KeyMsg()
+Keymsg_4 = KeyMsg()
+Keymsg_5 = KeyMsg()
+Keymsg_6 = KeyMsg()
+Keymsg_7 = KeyMsg()
+
 
 def hexshow(argv):
     result = ''
@@ -82,6 +92,17 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
         self.SetCommands(self.__EcoCmd)
         self.SetCommands(self.__SourceCmd)
         self.SetCommands(self.__FactoryCmd)
+
+
+        Keymsg_1.setName("Exit")
+        Keymsg_2.setName("Minus")
+        Keymsg_3.setName("Plus")
+        Keymsg_4.setName("Menu")
+        Keymsg_5.setName("Power")
+        Keymsg_6.setName("Source")
+        Keymsg_7.setName("Factory")
+
+
 
         self.installEventFilter(self)
         self.isopen = 0
@@ -264,7 +285,10 @@ class MainWidget(QtGui.QWidget,Ui_UsartTool):
             if self._serial.isOpen():
                 if keyEvent.key() == QtCore.Qt.Key_W:
                     self.Execute(self.__ExitCmd)
+                    print(Keymsg_1.isCustomize)
+                    print(Keymsg_1.name)
                 elif keyEvent.key() == QtCore.Qt.Key_S:
+                    print(Keymsg_2.name)
                     self.Execute(self.__MenuCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_A:
                     self.Execute(self.__MinusCmd)
