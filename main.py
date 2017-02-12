@@ -103,8 +103,11 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
         self.setupUi(self)
 
         self.textEdit.setReadOnly(True)
-        self.DatabitsComboBox.setCurrentIndex(3)#default 8 bits
-        self.BaudRataComboBox.setCurrentIndex(1)#default 9600
+        self.action8.checked = 1
+        self.action9600.checked = 1
+
+        #self.menu.setCuhrrentIndex(3)#default 8 bits
+        #self.BaudRataComboBox.setCurrentIndex(1)#default 9600
         """
         #Setup the singal
         self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
@@ -186,7 +189,8 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
         port_list = self._serial.GetSerialPorts()
         if len(port_list):
             for x in port_list:
-                self.SerialNumComboBox.addItem(x.device)
+                pass
+                #self.SerialNumComboBox.addItem(x.device)
         else:
             print("Can't find serial port")
             pass
