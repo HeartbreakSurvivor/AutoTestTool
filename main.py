@@ -103,8 +103,9 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
         self.setupUi(self)
 
         self.textEdit.setReadOnly(True)
-        self.action8.checked = 1
-        self.action9600.checked = 1
+        #self.actionMstar_9570S
+        self.action8.setChecked(1)
+        self.action9600.setCheckable(0)
 
         #self.menu.setCuhrrentIndex(3)#default 8 bits
         #self.BaudRataComboBox.setCurrentIndex(1)#default 9600
@@ -128,7 +129,7 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
         #serial configuration
         #self._serial = Serial()
         self._serial = MySerial()
-        self.GetSerialPorts()
+        self._serial.GetSerialPorts()
 
         #Command pattern
         #Create the commands
@@ -183,13 +184,16 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
             #Command.execute(self)
             self.__CommandList[Idx].execute()
 
+    def InitSlots(self):
+        pass
 
     #actions
     def GetSerialPorts(self):
         port_list = self._serial.GetSerialPorts()
         if len(port_list):
-            for x in port_list:
-                pass
+            return port_list
+            #for x in port_list:
+            #    pass
                 #self.SerialNumComboBox.addItem(x.device)
         else:
             print("Can't find serial port")
