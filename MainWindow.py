@@ -140,6 +140,9 @@ class Ui_MainWindow(object):
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 768, 23))
         self.menubar.setObjectName(_fromUtf8("menubar"))
+
+
+
         self.menuComPort = QtGui.QMenu(self.menubar)
         self.menuComPort.setObjectName(_fromUtf8("menuComPort"))
         self.menuBaudRates = QtGui.QMenu(self.menuComPort)
@@ -173,12 +176,20 @@ class Ui_MainWindow(object):
         self.action115200.setCheckable(True)
         self.action115200.setObjectName(_fromUtf8("action115200"))
         self.actionMstar_9570S = QtGui.QAction(MainWindow)
+        self.actionMstar_9570S.setStatusTip(_fromUtf8("the Mstar 9570s Project"))
         self.actionMstar_9570S.setCheckable(True)
         self.actionMstar_9570S.setChecked(False)
         self.actionMstar_9570S.setObjectName(_fromUtf8("actionMstar_9570S"))
         self.actionRealTek = QtGui.QAction(MainWindow)
         self.actionRealTek.setCheckable(True)
         self.actionRealTek.setObjectName(_fromUtf8("actionRealTek"))
+
+
+        self.Textbar = QtGui.QActionGroup(self)
+        self.Textbar.setObjectName("Test")
+        self.Textbar.addAction(self.actionRealTek)
+        self.Textbar.addAction(self.actionMstar_9570S)
+
         self.action5 = QtGui.QAction(MainWindow)
         self.action5.setCheckable(True)
         self.action5.setObjectName(_fromUtf8("action5"))
@@ -238,10 +249,10 @@ class Ui_MainWindow(object):
         self.menuComPort.addAction(self.menuParity.menuAction())
         self.menuSelect.addAction(self.actionMstar_9570S)
         self.menuSelect.addAction(self.actionRealTek)
+
         self.menubar.addAction(self.menuSelect.menuAction())
         self.menubar.addAction(self.menuComPort.menuAction())
         self.menubar.addAction(self.menuKey_Edit.menuAction())
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

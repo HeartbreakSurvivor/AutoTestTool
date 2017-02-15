@@ -8,12 +8,12 @@ importlib.reload(sys)
 from keyedit import Ui_KeyEdit
 from MainWindow import Ui_MainWindow
 from PyQt4 import QtCore, QtGui
+
 from serial import Serial
 import serial.tools.list_ports
 
 from MySerial import MySerial
 from Command import *
-
 from KeyMsg import KeyMsg
 import keyedit
 
@@ -98,14 +98,16 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
     def __init__(self,parent=None):
         super().__init__(parent)
 
+        QtCore.QCoreApplication.setOrganizationName("Cvte");
+        QtCore.QCoreApplication.setOrganizationDomain("zhanghao3126@cvte.com");
+        QtCore.QCoreApplication.setApplicationName("SerialTool");
+
         self.__CommandList = []
 
         self.setupUi(self)
-
+        self.WriteSettings()
+        self.ReadSettings()
         self.textEdit.setReadOnly(True)
-        #self.actionMstar_9570S
-        self.action8.setChecked(1)
-        self.action9600.setCheckable(0)
 
         #self.menu.setCuhrrentIndex(3)#default 8 bits
         #self.BaudRataComboBox.setCurrentIndex(1)#default 9600
@@ -185,6 +187,31 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
             self.__CommandList[Idx].execute()
 
     def InitSlots(self):
+        pass
+
+    def CreateActions(self):
+        pass
+
+    def GetChipSelect(self):
+        if self.actionRealTek.isChecked():
+            return 1
+        elif self.actionMstar_9570S.isChecked():
+            return 0
+
+    def ReadSettings(self):
+        settings = QtCore.QSettings()
+        if settings.value("ChipSet",0):
+            print("here?2")
+            self.actionRealTek.setChecked(1)
+        else:
+            print("here?1")
+            self.actionMstar_9570S.setChecked(1)
+
+
+    def WriteSettings(self):
+        settings = QtCore.QSettings()
+        #settings.setValue("ChipSet",QtCore.QVariant(self.GetChipSelect()))
+        settings.setValue("ChipSet",1)
         pass
 
     #actions
