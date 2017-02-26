@@ -292,6 +292,8 @@
     <addaction name="menuData_Bits"/>
     <addaction name="menuStop_Bits"/>
     <addaction name="menuParity"/>
+    <addaction name="separator"/>
+    <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuKey_Edit">
     <property name="title">
@@ -460,6 +462,11 @@
    </property>
    <property name="text">
     <string>Space</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>COM Port Connect</string>
    </property>
   </action>
  </widget>

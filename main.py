@@ -11,7 +11,6 @@ from PyQt4 import QtCore, QtGui
 
 from serial import Serial
 import serial.tools.list_ports
-
 from MySerial import MySerial
 from Command import *
 from KeyMsg import KeyMsg
@@ -94,7 +93,8 @@ class KeyEdit(QtGui.QWidget,Ui_KeyEdit):
             #    print("what's time")
             KeyMessage[i].setName(self.__KeyName[i].text())
 
-class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
+
+class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def __init__(self,parent=None):
         super().__init__(parent)
 
@@ -104,28 +104,17 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
 
         self.__CommandList = []
 
-        self.setupUi(self)
-        self.WriteSettings()
+
+        self.UI_Init()
+        self.Signal_Slot_Init()
+
         self.ReadSettings()
-        self.textEdit.setReadOnly(True)
 
         #self.menu.setCuhrrentIndex(3)#default 8 bits
         #self.BaudRataComboBox.setCurrentIndex(1)#default 9600
         """
         #Setup the singal
-        self.SwitchButton.connect(self.SwitchButton, QtCore.SIGNAL('clicked()'), self.Switchserial)
-        self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
-        self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
-        self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
-        self.HexSendcheckBox.connect(self.HexSendcheckBox, QtCore.SIGNAL('clicked()'), self.SendHex)
 
-        self.ExitButton.connect(self.ExitButton, QtCore.SIGNAL('clicked()'), self.ExitKey)
-        self.MenuButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.MenuKey)
-        self.MinusButton.connect(self.MinusButton,QtCore.SIGNAL('clicked()'),self.MinusKey)
-        self.PlusButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.PlusKey)
-        self.PowerButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.PowerKey)
-        self.SourceButton.connect(self.MinusButton,QtCore.SIGNAL('clicked()'),self.SourceKey)
-        self.FactoryButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
         #event filter
         """
         #serial configuration
@@ -162,8 +151,6 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
         Keymsg_6.setName("Source")
         Keymsg_7.setName("Factory")
 
-
-
         self.installEventFilter(self)
         self.isopen = 0
 
@@ -186,17 +173,121 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
             #Command.execute(self)
             self.__CommandList[Idx].execute()
 
-    def InitSlots(self):
+    def UI_Init(self):
+        self.setupUi(self)
+        self.textEdit.setReadOnly(True)
         pass
 
-    def CreateActions(self):
-        pass
+    def Signal_Slot_Init(self):
+        self.ExitButton.connect(self.ExitButton, QtCore.SIGNAL('clicked()'), self.ExitKey)
+        self.MenuButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.MenuKey)
+        self.MinusButton.connect(self.MinusButton, QtCore.SIGNAL('clicked()'), self.MinusKey)
+        self.PlusButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.PlusKey)
+        self.PowerButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.PowerKey)
+        self.SourceButton.connect(self.MinusButton, QtCore.SIGNAL('clicked()'), self.SourceKey)
+        self.FactoryButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
+
+        self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
+        self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
+        self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
+        self.HexSendcheckBox_2.connect(self.HexSendcheckBox_2, QtCore.SIGNAL('clicked()'), self.SendHex)
+        self.SaveDataButton.connect(self.SaveDataButton, QtCore.SIGNAL('clicked()'), self.SaveAs)
+
+        self.actionMstar_9570S.connect(self.actionMstar_9570S, QtCore.SIGNAL('triggered()'), self.SelectChip)
+        self.actionRealTek.connect(self.actionRealTek, QtCore.SIGNAL('triggered()'), self.SelectChip)
+
+        self.action4800.connect(self.action4800, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
+        self.action9600.connect(self.action9600, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
+        self.action57600.connect(self.action57600, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
+        self.action115200.connect(self.action115200, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
+
+        self.action5.connect(self.action5, QtCore.SIGNAL('triggered()'), self.Serial_SetDataBit)
+        self.action6.connect(self.action6, QtCore.SIGNAL('triggered()'), self.Serial_SetDataBit)
+        self.action7.connect(self.action7, QtCore.SIGNAL('triggered()'), self.Serial_SetDataBit)
+        self.action8.connect(self.action8, QtCore.SIGNAL('triggered()'), self.Serial_SetDataBit)
+
+        self.action1.connect(self.action1, QtCore.SIGNAL('triggered()'), self.Serial_SetStopBit)
+        self.action1_5.connect(self.action1_5, QtCore.SIGNAL('triggered()'), self.Serial_SetStopBit)
+        self.action3.connect(self.action3, QtCore.SIGNAL('triggered()'), self.Serial_SetStopBit)
+
+        self.actionNone.connect(self.actionNone, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
+        self.actionEven.connect(self.actionEven, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
+        self.actionSpace.connect(self.actionSpace, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
+        self.actionMark.connect(self.actionMark, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
+        self.actionOdd.connect(self.actionOdd, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
+
+    """
+        The triggered event
+    """
+
+    def SelectChip(self):
+        if self.GetChipSelect():
+            print("chip selcect")
+        else:
+            print("select the mstar")
 
     def GetChipSelect(self):
         if self.actionRealTek.isChecked():
             return 1
         elif self.actionMstar_9570S.isChecked():
             return 0
+
+    def Serial_SetBaudRate(self):
+        if self.action4800.isChecked():
+            self._serial.baudrate = 4800
+            print("4800")
+        if self.action9600.isChecked():
+            self._serial.baudrate = 9600
+            print("6998")
+        if self.action57600.isChecked():
+            self._serial.baudrate = 57600
+            print("123127")
+        if self.action115200.isChecked():
+            self._serial.baudrate = 115200
+            print("812321")
+
+    def Serial_SetDataBit(self):
+        if self.action5.isChecked():
+            self._serial.bytesize = 5
+            print("5")
+        if self.action6.isChecked():
+            self._serial.bytesize = 6
+            print("6")
+        if self.action7.isChecked():
+            self._serial.bytesize = 7
+            print("7")
+        if self.action8.isChecked():
+            self._serial.bytesize = 8
+            print("8")
+
+    def Serial_SetStopBit(self):
+        if self.action1.isChecked():
+            self._serial.stopbits = 1
+            print("1")
+        if self.action1_5.isChecked():
+            self._serial.stopbits = 1.5
+            print("1.5")
+        if self.action3.isChecked():
+            self._serial.stopbits = 2
+            print("2")
+
+    def Serial_SetParity(self):
+        if self.actionNone.isChecked():
+            self._serial.parity = 'N'
+            print("none")
+        if self.actionOdd.isChecked():
+            self._serial.parity = 'O'
+            print("Odd")
+        if self.actionEven.isChecked():
+            self._serial.parity = 'E'
+            print("even")
+        if self.actionSpace.isChecked():
+            self._serial.parity = 'S'
+            print("space")
+        if self.actionMark.isChecked():
+            self._serial.parity = 'M'
+            print("mark")
+
 
     def ReadSettings(self):
         settings = QtCore.QSettings()
@@ -346,6 +437,13 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
             self.textEdit.clear()
             self.textEdit.setText(self._str)
 
+    def SaveAs(self):
+        self.DataToSend.clear()
+        if self.HexSendcheckBox.isChecked():#check
+            print("Send Hex checked")
+        else:# cancel check
+            print("Send Hex no checked")
+
     def SendHex(self):
         self.DataToSend.clear()
         if self.HexSendcheckBox.isChecked():#check
@@ -396,15 +494,12 @@ class MainWidget(QtGui.QMainWindow,Ui_MainWindow):
             #print("the up key released")
         return QtGui.QWidget.eventFilter(self, watched, event)
 
+
 if __name__ == "__main__":
     print(__name__)
     print(__author__)
     print(__version__)
     app = QtGui.QApplication(sys.argv)
-    #app.installEventFilter(app)
-    #ui = Ui_UsartTool()
-
-    ui = MainWidget()
+    ui = MainWindow()
     ui.show()
-    #ui.setupUi(UsartTool)
     sys.exit(app.exec_())

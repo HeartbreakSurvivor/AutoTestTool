@@ -145,6 +145,8 @@ class Ui_MainWindow(object):
 
         self.menuComPort = QtGui.QMenu(self.menubar)
         self.menuComPort.setObjectName(_fromUtf8("menuComPort"))
+        self.menuConnect = QtGui.QMenu(self.menuComPort)
+        self.menuConnect.setObjectName(_fromUtf8("ComPortConnect"))
         self.menuBaudRates = QtGui.QMenu(self.menuComPort)
         self.menuBaudRates.setObjectName(_fromUtf8("menuBaudRates"))
         self.menuData_Bits = QtGui.QMenu(self.menuComPort)
@@ -163,6 +165,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.menuComport = QtGui.QAction(MainWindow)
         self.menuComport.setObjectName(_fromUtf8("menuComport"))
+
+        self.menuConnect = QtGui.QAction(MainWindow)
+        self.menuConnect.setObjectName(_fromUtf8("menuConnect"))
+
         self.action4800 = QtGui.QAction(MainWindow)
         self.action4800.setCheckable(True)
         self.action4800.setObjectName(_fromUtf8("action4800"))
@@ -189,6 +195,7 @@ class Ui_MainWindow(object):
         self.Textbar.setObjectName("Test")
         self.Textbar.addAction(self.actionRealTek)
         self.Textbar.addAction(self.actionMstar_9570S)
+
 
         self.action5 = QtGui.QAction(MainWindow)
         self.action5.setCheckable(True)
@@ -226,23 +233,60 @@ class Ui_MainWindow(object):
         self.actionSpace = QtGui.QAction(MainWindow)
         self.actionSpace.setCheckable(True)
         self.actionSpace.setObjectName(_fromUtf8("actionSpace"))
+
+
         self.menuBaudRates.addAction(self.action4800)
         self.menuBaudRates.addAction(self.action9600)
         self.menuBaudRates.addAction(self.action57600)
         self.menuBaudRates.addAction(self.action115200)
+
+# the all Action group delcation
+        self.BaudRateGroup = QtGui.QActionGroup(self)
+        self.BaudRateGroup.setObjectName("BaudRate")
+        self.BaudRateGroup.addAction(self.action4800)
+        self.BaudRateGroup.addAction(self.action9600)
+        self.BaudRateGroup.addAction(self.action57600)
+        self.BaudRateGroup.addAction(self.action115200)
+
+
         self.menuData_Bits.addAction(self.action5)
         self.menuData_Bits.addAction(self.action6)
         self.menuData_Bits.addAction(self.action7)
         self.menuData_Bits.addAction(self.action8)
+
+        self.DataBitGroup = QtGui.QActionGroup(self)
+        self.DataBitGroup.setObjectName("DatabitGroup")
+        self.DataBitGroup.addAction(self.action5)
+        self.DataBitGroup.addAction(self.action6)
+        self.DataBitGroup.addAction(self.action7)
+        self.DataBitGroup.addAction(self.action8)
+
         self.menuStop_Bits.addAction(self.action1)
         self.menuStop_Bits.addAction(self.action1_5)
         self.menuStop_Bits.addAction(self.action3)
+
+        self.StopBitBGroup = QtGui.QActionGroup(self)
+        self.StopBitBGroup.setObjectName("StopBitBGroup")
+        self.StopBitBGroup.addAction(self.action1)
+        self.StopBitBGroup.addAction(self.action1_5)
+        self.StopBitBGroup.addAction(self.action3)
+
         self.menuParity.addAction(self.actionNone)
         self.menuParity.addAction(self.actionOdd)
         self.menuParity.addAction(self.actionEven)
         self.menuParity.addAction(self.actionMark)
         self.menuParity.addAction(self.actionSpace)
+
+        self.Parityroup = QtGui.QActionGroup(self)
+        self.Parityroup.setObjectName("Parityroup")
+        self.Parityroup.addAction(self.actionNone)
+        self.Parityroup.addAction(self.actionOdd)
+        self.Parityroup.addAction(self.actionEven)
+        self.Parityroup.addAction(self.actionMark)
+        self.Parityroup.addAction(self.actionSpace)
+
         self.menuComPort.addAction(self.menuComport)
+        self.menuComPort.addAction(self.menuConnect)
         self.menuComPort.addAction(self.menuBaudRates.menuAction())
         self.menuComPort.addAction(self.menuData_Bits.menuAction())
         self.menuComPort.addAction(self.menuStop_Bits.menuAction())
@@ -253,6 +297,9 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuSelect.menuAction())
         self.menubar.addAction(self.menuComPort.menuAction())
         self.menubar.addAction(self.menuKey_Edit.menuAction())
+
+
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -285,6 +332,9 @@ class Ui_MainWindow(object):
         self.menuKey_Edit.setTitle(_translate("MainWindow", "Key Edit", None))
         self.menuSelect.setTitle(_translate("MainWindow", "Chip Select", None))
         self.menuComport.setText(_translate("MainWindow", "ComPort", None))
+
+        self.menuConnect.setText(_translate("MainWindow","ComPort Connect",None))
+
         self.action4800.setText(_translate("MainWindow", "4800", None))
         self.action9600.setText(_translate("MainWindow", "9600", None))
         self.action57600.setText(_translate("MainWindow", "57600", None))
