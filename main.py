@@ -5,93 +5,19 @@ import sys,binascii
 import importlib
 importlib.reload(sys)
 
-from keyedit import Ui_KeyEdit
 from MainWindow import Ui_MainWindow
 from PyQt4 import QtCore, QtGui
-
+from KeyMsg import KeyMsg
 from serial import Serial
 import serial.tools.list_ports
 from MySerial import MySerial
 from Command import *
-from KeyMsg import KeyMsg
+
 import keyedit
+from serial.serialutil import SerialBase, SerialException, to_bytes, portNotOpenError, writeTimeoutError
 
-
-#from Keyevent import Keyevent
 __author__ = "bigzhanghao"
 __version__ = "0.1"
-
-global Keymsg_1 , Keymsg_2 , Keymsg_3 , Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
-Keymsg_1 = KeyMsg()
-Keymsg_2 = KeyMsg()
-Keymsg_3 = KeyMsg()
-Keymsg_4 = KeyMsg()
-Keymsg_5 = KeyMsg()
-Keymsg_6 = KeyMsg()
-Keymsg_7 = KeyMsg()
-
-KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
-
-def hexshow(argv):
-    result = ''
-    hLen = len(argv)
-    for i in range(hLen):
-        hvol = ord(argv[i])
-        hhex = '%02x'%hvol
-        result += hhex + ' '
-        #print("hexshow: ", result)
-    return result
-
-class KeyEdit(QtGui.QWidget,Ui_KeyEdit):
-    def __init__(self,parent=None):
-        super().__init__(parent)
-
-        self.__KeyName = list[self.KeyName1,self.KeyName2,self.KeyName3,self.KeyName4,
-                              self.KeyName5,self.KeyName6,self.KeyName7]
-        self.__Customize = list[self.KeyCustome1,self.KeyCustome2,self.KeyCustome3,self.KeyCustome4,
-                                self.KeyCustome5,self.KeyCustome6,self.KeyCustome7]
-        self.__Content = list[self.SendMsg1,self.SendMsg2,self.SendMsg3,self.SendMsg4,self.SendMsg5,
-                              self.SendMsg6,self.SendMsg7]
-        self.__VirtualKey = list[self.VirtualKey1,self.VirtualKey2,self.VirtualKey3,self.VirtualKey4,
-                                self.VirtualKey5,self.VirtualKey6,self.VirtualKey7]
-
-        self.KeyCustome1.connect(self.KeyCustome1, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome2.connect(self.KeyCustome2, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome3.connect(self.KeyCustome3, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome4.connect(self.KeyCustome4, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome5.connect(self.KeyCustome5, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome6.connect(self.KeyCustome6, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-        self.KeyCustome7.connect(self.KeyCustome7, QtCore.SIGNAL('clicked()'), self.IsCustomized)
-
-    def IsCustomized(self):
-        for i in range(0,self.__Customize.__len__()):
-            if self.__Customize[i].isChecked():
-                KeyMessage[i].isCustomize = 1
-                self.__Content[i].setReadOnly(True)
-            else:
-                KeyMessage[i].isCustomize = 0
-                self.__Content[i].setReadOnly(False)
-
-    def GetEntityKey(self):
-        for i in range(0,self.__VirtualKey.__len__()):
-            if self.__VirtualKey.count(self.__VirtualKey[i].CurrentText()) > 1:
-                QtGui.QMessageBox.information(self, "Tips", "定义了相同的按键")
-                break
-            if self.__VirtualKey[i].CurrentText() is not None:
-                KeyMessage.setEntityKey(self.__VirtualKey[i].CurrentText())
-
-    def GetSendMsg(self):
-        TempMsg = ""
-        for i in range(0,self.__Content.__len__()):
-            if self.__Customize[i].isChecked():
-                TempMsg = self.__Content[i].text()
-                KeyMessage[i].setContent(TempMsg)
-
-    def GetKeyName(self):
-        for i in range(0,self.__KeyName.__len__()):
-            #if self.__KeyName[i].Length() >= 10:
-            #    print("what's time")
-            KeyMessage[i].setName(self.__KeyName[i].text())
 
 
 class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
@@ -102,47 +28,19 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         QtCore.QCoreApplication.setOrganizationDomain("zhanghao3126@cvte.com");
         QtCore.QCoreApplication.setApplicationName("SerialTool");
 
+        #variables definition
         self.__CommandList = []
+        self._serial = MySerial()
+        self._str = ""
 
-
-        self.UI_Init()
-        self.Signal_Slot_Init()
-
+        self.MainWindowInit()
         self.ReadSettings()
 
-        #self.menu.setCuhrrentIndex(3)#default 8 bits
-        #self.BaudRataComboBox.setCurrentIndex(1)#default 9600
-        """
-        #Setup the singal
+        self._serial.GetSerialPorts()#serial configuration
+        self.Signal_Slot_Init() # Setup the singal
 
-        #event filter
-        """
-        #serial configuration
-        #self._serial = Serial()
-        self._serial = MySerial()
-        self._serial.GetSerialPorts()
-
-        #Command pattern
-        #Create the commands
-        self.__MenuCmd = MeunCommand(self._serial)
-        self.__ExitCmd = ExitCommand(self._serial)
-        self.__PowerCmd = PowerCommand(self._serial)
-        self.__PlusCmd = PlusCommand(self._serial)
-        self.__MinusCmd = MinusCommand(self._serial)
-        self.__EcoCmd = EcoCommand(self._serial)
-        self.__SourceCmd = SourceCommand(self._serial)
-        self.__FactoryCmd = FactoryCommand(self._serial)
-
-        self.SetCommands(self.__MenuCmd)
-        self.SetCommands(self.__MinusCmd)
-        self.SetCommands(self.__ExitCmd)
-        self.SetCommands(self.__PowerCmd)
-        self.SetCommands(self.__PlusCmd)
-        self.SetCommands(self.__EcoCmd)
-        self.SetCommands(self.__SourceCmd)
-        self.SetCommands(self.__FactoryCmd)
-
-
+        self.Command_Init()# The design pattern
+    """
         Keymsg_1.setName("Exit")
         Keymsg_2.setName("Minus")
         Keymsg_3.setName("Plus")
@@ -150,32 +48,14 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         Keymsg_5.setName("Power")
         Keymsg_6.setName("Source")
         Keymsg_7.setName("Factory")
+    """
 
-        self.installEventFilter(self)
-        self.isopen = 0
-
-        #用定时器每个一定时间去扫描有没数据收到，只要在打开串口才开始即使
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.Receive)
-
-        self._str = ""
-        #private variable
-
-    #add new command to the command list
-    def SetCommands(self,Command):
-        self.__CommandList.append(Command)
-
-    #invoker execute the command
-    def Execute(self,Command):
-        if Command in self.__CommandList:
-            Idx = self.__CommandList.index(Command)
-            print(Idx)
-            #Command.execute(self)
-            self.__CommandList[Idx].execute()
-
-    def UI_Init(self):
+    def MainWindowInit(self):
         self.setupUi(self)
         self.textEdit.setReadOnly(True)
+        self.installEventFilter(self)
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.Receive)
         pass
 
     def Signal_Slot_Init(self):
@@ -195,6 +75,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
         self.actionMstar_9570S.connect(self.actionMstar_9570S, QtCore.SIGNAL('triggered()'), self.SelectChip)
         self.actionRealTek.connect(self.actionRealTek, QtCore.SIGNAL('triggered()'), self.SelectChip)
+
+        # the serial settings
+        self.menuConnect.connect(self.menuConnect, QtCore.SIGNAL('triggered()'), self.Switchserial)
 
         self.action4800.connect(self.action4800, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
         self.action9600.connect(self.action9600, QtCore.SIGNAL('triggered()'), self.Serial_SetBaudRate)
@@ -216,9 +99,38 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.actionMark.connect(self.actionMark, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
         self.actionOdd.connect(self.actionOdd, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
 
-    """
-        The triggered event
-    """
+    # add new command to the command list
+    def SetCommands(self, Command):
+        self.__CommandList.append(Command)
+
+    #Createand set the commands
+    def Command_Init(self):
+        self.__MenuCmd = MeunCommand(self._serial)
+        self.__ExitCmd = ExitCommand(self._serial)
+        self.__PowerCmd = PowerCommand(self._serial)
+        self.__PlusCmd = PlusCommand(self._serial)
+        self.__MinusCmd = MinusCommand(self._serial)
+        self.__EcoCmd = EcoCommand(self._serial)
+        self.__SourceCmd = SourceCommand(self._serial)
+        self.__FactoryCmd = FactoryCommand(self._serial)
+
+        self.SetCommands(self.__MenuCmd)
+        self.SetCommands(self.__MinusCmd)
+        self.SetCommands(self.__ExitCmd)
+        self.SetCommands(self.__PowerCmd)
+        self.SetCommands(self.__PlusCmd)
+        self.SetCommands(self.__EcoCmd)
+        self.SetCommands(self.__SourceCmd)
+        self.SetCommands(self.__FactoryCmd)
+
+    #invoker execute the command
+    def Execute(self,Command):
+        if Command in self.__CommandList:
+            Idx = self.__CommandList.index(Command)
+            print(Idx)
+            #Command.execute(self)
+            self.__CommandList[Idx].execute()
+
 
     def SelectChip(self):
         if self.GetChipSelect():
@@ -309,80 +221,54 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def GetSerialPorts(self):
         port_list = self._serial.GetSerialPorts()
         if len(port_list):
-            return port_list
-            #for x in port_list:
-            #    pass
-                #self.SerialNumComboBox.addItem(x.device)
+            for x in port_list:
+                self.menuComPort.addQAction(x.device)
         else:
             print("Can't find serial port")
             pass
 
     def Switchserial(self):
-        #clickstatus = self.pushButton.isChecked() #串口开关状态检查
-        if not self.isopen: #如果串口为关闭状态
-            #获得串口参数
-            #comread = int(self.label_3.   text())-1 #端口号，计算机端口都是从0开始算的，所以减去1
-            #baudrate = self._serial.baudrate
-            port = self.SerialNumComboBox.currentText()
-            baudrate = int(self.BaudRataComboBox.currentText()) #波特率
-            bytesize = int(self.DatabitsComboBox.currentText())
-            stopbits = int(self.StopBitsComboBox.currentText())
-            parity = self.ParityComboBox.currentText()
-            try:
-                #self._serial = Serial(port="COM1", baudrate=9600,bytesize=8,stopbits=1)
-                print(port)
-                self._serial.port = port
-                self._serial.baudrate = baudrate
-                self._serial.bytesize = bytesize
-                self._serial.stopbits = stopbits
-                self._serial.parity = parity
-                self._serial.open()
-                self.isopen = 1
-            except:
-                QtGui.QMessageBox.information(self, "Tips", "串口打开失败，请确认串口号是否被占用")
-                return False
-            self.timer.start(30)  # 30ms刷新一次界面
-            print("open the serial and timer start")
-            self.SerialNumComboBox.setEnabled(False)
-            self.DatabitsComboBox.setEnabled(False)
-            self.BaudRataComboBox.setEnabled(False)
-            self.StopBitsComboBox.setEnabled(False)
-            self.ParityComboBox.setEnabled(False)
-            self.SwitchButton.setText("关闭串口")
-            #打开串口
-        else:
+        if self._serial.is_open:
             try:
                 self._serial.close()
-                self.isopen = 0
+                self.timer.stop()
+
+                self.menuConnect.setText(_translate("MainWindow", "ComPort Connect", None))
+                self.menuComPort.setEnabled(True)
+                self.menuBaudRates.setEnabled(True)
+                self.menuData_Bits.setEnabled(True)
+                self.menuStop_Bits.setEnabled(True)
+                self.menuParity.setEnabled(True)
             except:
                 print("close the serial fail")
-            self.timer.stop()
-            self.SerialNumComboBox.setEnabled(True)
-            self.DatabitsComboBox.setEnabled(True)
-            self.BaudRataComboBox.setEnabled(True)
-            self.StopBitsComboBox.setEnabled(True)
-            self.ParityComboBox.setEnabled(True)
-            self.SwitchButton.setText("打开串口")
+        else:
+            try:
+                self._serial.open()
+                self.timer.start(30)
+                self.menuConnect.setText(_translate("MainWindow", "ComPort DisConnect", None))
+                self.menuComPort.setEnabled(False)
+                self.menuBaudRates.setEnabled(False)
+                self.menuData_Bits.setEnabled(False)
+                self.menuStop_Bits.setEnabled(False)
+                self.menuParity.setEnabled(False)
+                print("open the serial and timer start")
+            except serial.serialutil.SerialException:
+                QtGui.QMessageBox.information(self, "Tips", "串口打开失败，请确认串口号是否被占用")
+                return False
 
     def Send(self):
-        if not self.isopen:
+        if not self._serial.is_open:
             QtGui.QMessageBox.information(self,"Tips","请先打开串口")
             return
         else:
             try:
                 if not self.HexSendcheckBox.isChecked():
-                    #hexer = list(self.DataToSend.text())
                     self._serial.send(self.DataToSend.text().encode())
                 else:
                     self._serial.send(self.DataToSend.text().encode())
             except:
                 print("send data fail")
                 return
-        """self.ui.onSendData(data, _type)
-        if _type == "hex":
-            data = Util.toHex(''.join(data.split()))
-        self.serial.send(data, _type)
-        """
 
     def Receive(self):
         if self.isopen:
@@ -396,10 +282,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 self.recstr = self._serial.read(bytesToRead)
                 #self.textEdit.append(self.recstr.decode(encoding='utf-8'))
                 self._str +=(self.recstr.decode(encoding='gbk'))
-
-                #self.textEdit.append(self.recstr.decode(encoding='gbk'))
-                #self.textEdit.insertPlainText(self.recstr.decode(encoding='gbk'))
-
                 #self._str = self.textEdit.toPlainText()
 
                 #if self.textEdit.toPlainText().__len__() > 10000:
@@ -418,15 +300,21 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         else:
             pass
 
-    def close(self):
-        if self.serial.isOpen():
-            self.serial.close()
-
     def Clear(self):
         self._str = ""
         self.textEdit.clear()
         self.DataToSend.clear()
         return
+
+    def hexshow(argv):
+        result = ''
+        hLen = len(argv)
+        for i in range(hLen):
+            hvol = ord(argv[i])
+            hhex = '%02x' % hvol
+            result += hhex + ' '
+            # print("hexshow: ", result)
+        return result
 
     def DisHex(self):
         if self.HexDisCheckbox.isChecked():#check
