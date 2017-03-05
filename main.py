@@ -12,7 +12,7 @@ from serial import Serial
 import serial.tools.list_ports
 from MySerial import MySerial
 from Command import *
-
+from KeyControl import KeyEdit
 from keyedit import *
 from serial.serialutil import SerialBase, SerialException, to_bytes, portNotOpenError, writeTimeoutError
 
@@ -148,13 +148,13 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         if self.action4800.isChecked():
             self._serial.baudrate = 4800
             print("4800")
-        if self.action9600.isChecked():
+        elif self.action9600.isChecked():
             self._serial.baudrate = 9600
             print("6998")
-        if self.action57600.isChecked():
+        elif self.action57600.isChecked():
             self._serial.baudrate = 57600
             print("123127")
-        if self.action115200.isChecked():
+        elif self.action115200.isChecked():
             self._serial.baudrate = 115200
             print("812321")
 
@@ -162,13 +162,13 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         if self.action5.isChecked():
             self._serial.bytesize = 5
             print("5")
-        if self.action6.isChecked():
+        elif self.action6.isChecked():
             self._serial.bytesize = 6
             print("6")
-        if self.action7.isChecked():
+        elif self.action7.isChecked():
             self._serial.bytesize = 7
             print("7")
-        if self.action8.isChecked():
+        elif self.action8.isChecked():
             self._serial.bytesize = 8
             print("8")
 
@@ -176,10 +176,10 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         if self.action1.isChecked():
             self._serial.stopbits = 1
             print("1")
-        if self.action1_5.isChecked():
+        elif self.action1_5.isChecked():
             self._serial.stopbits = 1.5
             print("1.5")
-        if self.action3.isChecked():
+        elif self.action3.isChecked():
             self._serial.stopbits = 2
             print("2")
 
@@ -187,25 +187,33 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         if self.actionNone.isChecked():
             self._serial.parity = 'N'
             print("none")
-        if self.actionOdd.isChecked():
+        elif self.actionOdd.isChecked():
             self._serial.parity = 'O'
             print("Odd")
-        if self.actionEven.isChecked():
+        elif self.actionEven.isChecked():
             self._serial.parity = 'E'
             print("even")
-        if self.actionSpace.isChecked():
+        elif self.actionSpace.isChecked():
             self._serial.parity = 'S'
             print("space")
-        if self.actionMark.isChecked():
+        elif self.actionMark.isChecked():
             self._serial.parity = 'M'
             print("mark")
 
     def Edit_VirtualKey(self):
         print("open a new dialog")
-        KeyEdit = QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
-        KeyEdit.setModal(True)# set the new dialog with modal
-        Ui_KeyEdit.setupUi(self,KeyEdit)
-        KeyEdit.show()
+
+        #tempDialog = QtGui.QDialog()
+        #_editkey = Ui_KeyEdit()  # KeyEdit(KeyEditDialog)
+        #_editkey.setupUi(tempDialog)
+
+        KeyEditDialog = KeyEdit(self)  #QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
+        KeyEditDialog.setModal(True)# set the new dialog with modal
+        KeyEditDialog.show()
+
+        #KeyEditDialog = KeyEdit()
+        #Ui_KeyEdit.setupUi(self,KeyEdit)
+        #KeyEditDialog.show()
 
     def ReadSettings(self):
         settings = QtCore.QSettings()

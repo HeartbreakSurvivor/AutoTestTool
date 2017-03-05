@@ -1,3 +1,4 @@
+from PyQt4 import QtCore, QtGui
 from KeyMsg import KeyMsg
 from keyedit import Ui_KeyEdit
 
@@ -12,17 +13,18 @@ Keymsg_7 = KeyMsg()
 
 KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
 
-class KeyEdit(QtGui.QWidget,Ui_KeyEdit):
+class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
     def __init__(self,parent=None):
         super().__init__(parent)
+        self.setupUi(self)
 
-        self.__KeyName = list[self.KeyName1,self.KeyName2,self.KeyName3,self.KeyName4,
+        self.__KeyName = [self.KeyName1,self.KeyName2,self.KeyName3,self.KeyName4,
                               self.KeyName5,self.KeyName6,self.KeyName7]
-        self.__Customize = list[self.KeyCustome1,self.KeyCustome2,self.KeyCustome3,self.KeyCustome4,
+        self.__Customize = [self.KeyCustome1,self.KeyCustome2,self.KeyCustome3,self.KeyCustome4,
                                 self.KeyCustome5,self.KeyCustome6,self.KeyCustome7]
-        self.__Content = list[self.SendMsg1,self.SendMsg2,self.SendMsg3,self.SendMsg4,self.SendMsg5,
+        self.__Content = [self.SendMsg1,self.SendMsg2,self.SendMsg3,self.SendMsg4,self.SendMsg5,
                               self.SendMsg6,self.SendMsg7]
-        self.__VirtualKey = list[self.VirtualKey1,self.VirtualKey2,self.VirtualKey3,self.VirtualKey4,
+        self.__VirtualKey = [self.VirtualKey1,self.VirtualKey2,self.VirtualKey3,self.VirtualKey4,
                                 self.VirtualKey5,self.VirtualKey6,self.VirtualKey7]
 
         self.KeyCustome1.connect(self.KeyCustome1, QtCore.SIGNAL('clicked()'), self.IsCustomized)
