@@ -184,12 +184,16 @@ class Ui_MainWindow(object):
         self.actionMstar_9570S = QtGui.QAction(MainWindow)
         self.actionMstar_9570S.setStatusTip(_fromUtf8("the Mstar 9570s Project"))
         self.actionMstar_9570S.setCheckable(True)
-        self.actionMstar_9570S.setChecked(False)
         self.actionMstar_9570S.setObjectName(_fromUtf8("actionMstar_9570S"))
         self.actionRealTek = QtGui.QAction(MainWindow)
         self.actionRealTek.setCheckable(True)
+        self.actionRealTek.setStatusTip(_fromUtf8("the RelTek Project"))
         self.actionRealTek.setObjectName(_fromUtf8("actionRealTek"))
+        self.actionRealTek = QtGui.QAction(MainWindow)
 
+        self.actionKeyedit = QtGui.QAction(MainWindow)
+        self.actionKeyedit.setStatusTip(_fromUtf8("Edit the Virtual Key"))
+        self.actionKeyedit.setObjectName(_fromUtf8("actionKeyedit"))
 
         self.Textbar = QtGui.QActionGroup(self)
         self.Textbar.setObjectName("Test")
@@ -293,6 +297,7 @@ class Ui_MainWindow(object):
         self.menuComPort.addAction(self.menuParity.menuAction())
         self.menuSelect.addAction(self.actionMstar_9570S)
         self.menuSelect.addAction(self.actionRealTek)
+        self.menuKey_Edit.addAction(self.actionKeyedit)
 
         self.menubar.addAction(self.menuSelect.menuAction())
         self.menubar.addAction(self.menuComPort.menuAction())
@@ -341,6 +346,7 @@ class Ui_MainWindow(object):
         self.action115200.setText(_translate("MainWindow", "115200", None))
         self.actionMstar_9570S.setText(_translate("MainWindow", "Mstar", None))
         self.actionRealTek.setText(_translate("MainWindow", "RealTek", None))
+        self.actionKeyedit.setText(_translate("MainWindow","Edit Virtual Key",None))
         self.action5.setText(_translate("MainWindow", "5", None))
         self.action6.setText(_translate("MainWindow", "6", None))
         self.action7.setText(_translate("MainWindow", "7", None))

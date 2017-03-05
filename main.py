@@ -13,7 +13,7 @@ import serial.tools.list_ports
 from MySerial import MySerial
 from Command import *
 
-import keyedit
+from keyedit import *
 from serial.serialutil import SerialBase, SerialException, to_bytes, portNotOpenError, writeTimeoutError
 
 __author__ = "bigzhanghao"
@@ -76,6 +76,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.actionMstar_9570S.connect(self.actionMstar_9570S, QtCore.SIGNAL('triggered()'), self.SelectChip)
         self.actionRealTek.connect(self.actionRealTek, QtCore.SIGNAL('triggered()'), self.SelectChip)
 
+        self.actionKeyedit.connect(self.actionKeyedit,QtCore.SIGNAL('triggered()'),self.Edit_VirtualKey)
         # the serial settings
         self.menuConnect.connect(self.menuConnect, QtCore.SIGNAL('triggered()'), self.Switchserial)
 
@@ -130,7 +131,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             print(Idx)
             #Command.execute(self)
             self.__CommandList[Idx].execute()
-
 
     def SelectChip(self):
         if self.GetChipSelect():
@@ -200,6 +200,12 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             self._serial.parity = 'M'
             print("mark")
 
+    def Edit_VirtualKey(self):
+        print("open a new dialog")
+        KeyEdit = QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
+        KeyEdit.setModal(True)# set the new dialog with modal
+        Ui_KeyEdit.setupUi(self,KeyEdit)
+        KeyEdit.show()
 
     def ReadSettings(self):
         settings = QtCore.QSettings()
@@ -360,10 +366,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             if self._serial.isOpen():
                 if keyEvent.key() == QtCore.Qt.Key_W:
                     self.Execute(self.__ExitCmd)
-                    print(Keymsg_1.isCustomize)
-                    print(Keymsg_1.name)
                 elif keyEvent.key() == QtCore.Qt.Key_S:
-                    print(Keymsg_2.name)
                     self.Execute(self.__MenuCmd)
                 elif keyEvent.key() == QtCore.Qt.Key_A:
                     self.Execute(self.__MinusCmd)
