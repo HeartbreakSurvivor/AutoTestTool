@@ -145,8 +145,12 @@ class Ui_MainWindow(object):
 
         self.menuComPort = QtGui.QMenu(self.menubar)
         self.menuComPort.setObjectName(_fromUtf8("menuComPort"))
+
         self.menuConnect = QtGui.QMenu(self.menuComPort)
         self.menuConnect.setObjectName(_fromUtf8("ComPortConnect"))
+
+        self.PortList = QtGui.QMenu(self.menuComPort)
+        self.PortList.setObjectName(_fromUtf8("PortList"))
         self.menuBaudRates = QtGui.QMenu(self.menuComPort)
         self.menuBaudRates.setObjectName(_fromUtf8("menuBaudRates"))
         self.menuData_Bits = QtGui.QMenu(self.menuComPort)
@@ -163,8 +167,6 @@ class Ui_MainWindow(object):
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-        self.menuComport = QtGui.QAction(MainWindow)
-        self.menuComport.setObjectName(_fromUtf8("menuComport"))
 
         self.menuConnect = QtGui.QAction(MainWindow)
         self.menuConnect.setObjectName(_fromUtf8("menuConnect"))
@@ -238,7 +240,6 @@ class Ui_MainWindow(object):
         self.actionSpace.setCheckable(True)
         self.actionSpace.setObjectName(_fromUtf8("actionSpace"))
 
-
         self.menuBaudRates.addAction(self.action4800)
         self.menuBaudRates.addAction(self.action9600)
         self.menuBaudRates.addAction(self.action57600)
@@ -289,8 +290,9 @@ class Ui_MainWindow(object):
         self.Parityroup.addAction(self.actionMark)
         self.Parityroup.addAction(self.actionSpace)
 
-        self.menuComPort.addAction(self.menuComport)
         self.menuComPort.addAction(self.menuConnect)
+
+        self.menuComPort.addAction(self.PortList.menuAction())
         self.menuComPort.addAction(self.menuBaudRates.menuAction())
         self.menuComPort.addAction(self.menuData_Bits.menuAction())
         self.menuComPort.addAction(self.menuStop_Bits.menuAction())
@@ -330,13 +332,15 @@ class Ui_MainWindow(object):
         self.SaveDataButton.setText(_translate("MainWindow", "保存", None))
         self.HexSendcheckBox_2.setText(_translate("MainWindow", "HEX发送", None))
         self.menuComPort.setTitle(_translate("MainWindow", "COM Port", None))
+
+        self.PortList.setTitle(_translate("MainWindow", "Portlist", None))
         self.menuBaudRates.setTitle(_translate("MainWindow", "BaudRates", None))
         self.menuData_Bits.setTitle(_translate("MainWindow", "Data Bits", None))
         self.menuStop_Bits.setTitle(_translate("MainWindow", "Stop Bits", None))
         self.menuParity.setTitle(_translate("MainWindow", "Parity", None))
         self.menuKey_Edit.setTitle(_translate("MainWindow", "Key Edit", None))
         self.menuSelect.setTitle(_translate("MainWindow", "Chip Select", None))
-        self.menuComport.setText(_translate("MainWindow", "ComPort", None))
+
 
         self.menuConnect.setText(_translate("MainWindow","ComPort Connect",None))
 
