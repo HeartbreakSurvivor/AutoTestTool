@@ -16,17 +16,31 @@ from KeyControl import KeyEdit
 from keyedit import *
 from serial.serialutil import SerialBase, SerialException, to_bytes, portNotOpenError, writeTimeoutError
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+
 __author__ = "bigzhanghao"
 __version__ = "0.1"
-
 
 class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def __init__(self,parent=None):
         super().__init__(parent)
 
-        QtCore.QCoreApplication.setOrganizationName("Cvte");
-        QtCore.QCoreApplication.setOrganizationDomain("zhanghao3126@cvte.com");
-        QtCore.QCoreApplication.setApplicationName("SerialTool");
+        QtCore.QCoreApplication.setOrganizationName("Cvte")
+        QtCore.QCoreApplication.setOrganizationDomain("zhanghao3126@cvte.com")
+        QtCore.QCoreApplication.setApplicationName("SerialTool")
 
         #variables definition
         self.__CommandList = []
@@ -35,8 +49,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
         self.MainWindowInit()
         self.ReadSettings()
+        self.actionMstar_9570S.setChecked(True)
 
-        self._serial.GetSerialPorts()#serial configuration
+        self.AddSerialPorts()#serial configuration
         self.Signal_Slot_Init() # Setup the singal
 
         self.Command_Init()# The design pattern
@@ -147,16 +162,13 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def Serial_SetBaudRate(self):
         if self.action4800.isChecked():
             self._serial.baudrate = 4800
-            print("4800")
         elif self.action9600.isChecked():
             self._serial.baudrate = 9600
-            print("6998")
         elif self.action57600.isChecked():
             self._serial.baudrate = 57600
-            print("123127")
         elif self.action115200.isChecked():
             self._serial.baudrate = 115200
-            print("812321")
+        return self._serial.baudrate
 
     def Serial_SetDataBit(self):
         if self.action5.isChecked():
@@ -170,7 +182,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             print("7")
         elif self.action8.isChecked():
             self._serial.bytesize = 8
-            print("8")
+        return self._serial.bytesize
 
     def Serial_SetStopBit(self):
         if self.action1.isChecked():
@@ -181,7 +193,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             print("1.5")
         elif self.action3.isChecked():
             self._serial.stopbits = 2
-            print("2")
+        return self._serial.stopbits
 
     def Serial_SetParity(self):
         if self.actionNone.isChecked():
@@ -198,7 +210,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             print("space")
         elif self.actionMark.isChecked():
             self._serial.parity = 'M'
-            print("mark")
+        return self._serial.parity
 
     def Edit_VirtualKey(self):
         print("open a new dialog")
@@ -216,51 +228,113 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         #KeyEditDialog.show()
 
     def ReadSettings(self):
-        settings = QtCore.QSettings()
-        if settings.value("ChipSet",0):
-            print("here?2")
-            self.actionRealTek.setChecked(1)
-        else:
-            print("here?1")
-            self.actionMstar_9570S.setChecked(1)
+        settings = QtCore.QSettings("bigzhanghao","MainWindow")
 
+        if settings.value("ChipSet",0) == 0:
+            self.actionMstar_9570S.setChecked(1)
+        else:
+            self.actionRealTek.setChecked(1)
+
+        settings.beginGroup("Serial")
+        if settings.value("BaudRate",9600) == 4800:
+            self.action4800.setChecked(1)
+        elif settings.value("BaudRate",9600) == 9600:
+            self.action9600.setChecked(1)
+        elif settings.value("BaudRate",9600) == 57600:
+            self.action57600.setChecked(1)
+        elif settings.value("BaudRate",9600) == 115200:
+            self.action115200.setChecked(1)
+
+        if settings.value("DataBits",8) == 5:
+            self.action5.setChecked(1)
+        elif settings.value("DataBits",8) == 6:
+            self.action6.setChecked(1)
+        elif settings.value("DataBits",8) == 7:
+            self.action7.setChecked(1)
+        elif settings.value("DataBits",8) == 8:
+            self.action8.setChecked(1)
+
+        if settings.value("StopBits", 1) == 1:
+            self.action1.setChecked(1)
+        elif settings.value("StopBits", 1) == 1.5:
+            self.action1_5.setChecked(1)
+        elif settings.value("StopBits", 1) == 2:
+            self.action3.setChecked(1)
+
+        if settings.value("Parity", "None") == "None":
+            self.actionNone.setChecked(1)
+        if settings.value("Parity", "None") == "Odd":
+            self.actionOdd.setChecked(1)
+        if settings.value("Parity", "None") == "Even":
+            self.actionEven.setChecked(1)
+        if settings.value("Parity", "None") == "Mark":
+            self.actionMark.setChecked(1)
+        if settings.value("Parity", "None") == "Space":
+            self.actionSpace.setChecked(1)
+        settings.endGroup()
 
     def WriteSettings(self):
-        settings = QtCore.QSettings()
-        #settings.setValue("ChipSet",QtCore.QVariant(self.GetChipSelect()))
-        settings.setValue("ChipSet",1)
-        pass
+        settings = QtCore.QSettings("bigzhanghao","MainWindow")
+
+        settings.setValue("ChipSet",QtCore.QVariant(self.GetChipSelect()))
+
+        settings.beginGroup("Serial")
+        settings.setValue("BaudRate",self.Serial_SetBaudRate())
+        settings.setValue("DataBits", self.Serial_SetDataBit())
+        settings.setValue("StopBits", self.Serial_SetStopBit())
+        settings.setValue("Parity", self.Serial_SetParity())
+        settings.endGroup()
 
     #actions
-    def GetSerialPorts(self):
+    def AddSerialPorts(self):
         port_list = self._serial.GetSerialPorts()
+        self.PortActionGroup = QtGui.QActionGroup(self)
+        self.PortActionGroup.setObjectName("PortActionGroup")
         if len(port_list):
             for x in port_list:
-                self.menuComPort.addQAction(x.device)
+                tempName = x.device
+                self.tempName = QtGui.QAction(tempName,self)
+                self.tempName.setCheckable(True)
+                self.PortList.addAction(self.tempName)
+                self.PortActionGroup.addAction(self.tempName)
+            self.tempName.setChecked(True)
         else:
-            print("Can't find serial port")
-            pass
+            QtGui.QMessageBox.information(self, "Tips", "没有找到可用的端口号")
+
+    def GetCurrentPortNumber(self):
+        port_list = self._serial.GetSerialPorts()
+        for x in port_list:
+            tempName = x.device
+            self.tempName = QtGui.QAction(tempName,self)
+            self.tempName.setCheckable(True)
+            self.PortList.addAction(self.tempName)
+            self.PortActionGroup.addAction(self.tempName)
+            self.tempName.setChecked(True)
+
+
 
     def Switchserial(self):
         if self._serial.is_open:
             try:
                 self._serial.close()
                 self.timer.stop()
-
                 self.menuConnect.setText(_translate("MainWindow", "ComPort Connect", None))
-                self.menuComPort.setEnabled(True)
+                self.PortList.setEnabled(True)
                 self.menuBaudRates.setEnabled(True)
                 self.menuData_Bits.setEnabled(True)
                 self.menuStop_Bits.setEnabled(True)
                 self.menuParity.setEnabled(True)
             except:
-                print("close the serial fail")
+                QtGui.QMessageBox.information(self, "Tips", "串口关闭失败")
+                sys.exit()
         else:
             try:
+                self._serial.port = "COM1"
                 self._serial.open()
                 self.timer.start(30)
                 self.menuConnect.setText(_translate("MainWindow", "ComPort DisConnect", None))
-                self.menuComPort.setEnabled(False)
+                #self.menuComPort.setEnabled(False)
+                self.PortList.setEnabled(False)
                 self.menuBaudRates.setEnabled(False)
                 self.menuData_Bits.setEnabled(False)
                 self.menuStop_Bits.setEnabled(False)
@@ -285,7 +359,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 return
 
     def Receive(self):
-        if self.isopen:
+        if self._serial.is_open:
             try:
                 bytesToRead = self._serial.inWaiting()
             except:
