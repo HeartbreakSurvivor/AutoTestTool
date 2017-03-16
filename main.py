@@ -43,6 +43,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         QtCore.QCoreApplication.setApplicationName("SerialTool")
 
         #variables definition
+        self.portlist = []
         self.__CommandList = []
         self._serial = MySerial()
         self._str = ""
@@ -287,31 +288,29 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
     #actions
     def AddSerialPorts(self):
-        port_list = self._serial.GetSerialPorts()
+        self.port_list = self._serial.GetSerialPorts()
         self.PortActionGroup = QtGui.QActionGroup(self)
         self.PortActionGroup.setObjectName("PortActionGroup")
-        if len(port_list):
-            for x in port_list:
+        if len(self.port_list):
+            for x in self.port_list:
                 tempName = x.device
                 self.tempName = QtGui.QAction(tempName,self)
                 self.tempName.setCheckable(True)
                 self.PortList.addAction(self.tempName)
                 self.PortActionGroup.addAction(self.tempName)
+                self.portlist.append(self.tempName)
+                print(self.tempName.text())
+                #self.portlist.append(self.tempName)
             self.tempName.setChecked(True)
         else:
             QtGui.QMessageBox.information(self, "Tips", "没有找到可用的端口号")
 
     def GetCurrentPortNumber(self):
-        port_list = self._serial.GetSerialPorts()
-        for x in port_list:
-            tempName = x.device
-            self.tempName = QtGui.QAction(tempName,self)
-            self.tempName.setCheckable(True)
-            self.PortList.addAction(self.tempName)
-            self.PortActionGroup.addAction(self.tempName)
-            self.tempName.setChecked(True)
-
-
+        for x in self.portlist:
+            #assert isinstance(x.isChecked, object)
+            if x.isChecked():
+                return x.text()
+        QtGui.QMessageBox.information(self, "Tips", "没有找到可用的端口号")
 
     def Switchserial(self):
         if self._serial.is_open:
@@ -329,11 +328,13 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 sys.exit()
         else:
             try:
-                self._serial.port = "COM1"
+                portnumber = self.GetCurrentPortNumber()
+                print(portnumber)
+                self._serial.port = portnumber #self.GetCurrentPortNumber()# "COM1"
                 self._serial.open()
                 self.timer.start(30)
                 self.menuConnect.setText(_translate("MainWindow", "ComPort DisConnect", None))
-                #self.menuComPort.setEnabled(False)
+                    #self.menuComPort.setEnabled(False)
                 self.PortList.setEnabled(False)
                 self.menuBaudRates.setEnabled(False)
                 self.menuData_Bits.setEnabled(False)
