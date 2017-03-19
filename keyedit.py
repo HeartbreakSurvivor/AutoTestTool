@@ -31,32 +31,32 @@ class Ui_KeyEdit(object):
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
-        self.KeyName1 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName1 = QtGui.QLineEdit(KeyEdit)
         self.KeyName1.setEnabled(True)
         self.KeyName1.setGeometry(QtCore.QRect(21, 41, 71, 25))
         self.KeyName1.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName1.setObjectName(_fromUtf8("KeyName1"))
-        self.KeyName2 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName2 = QtGui.QLineEdit(KeyEdit)
         self.KeyName2.setGeometry(QtCore.QRect(21, 78, 71, 25))
         self.KeyName2.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName2.setObjectName(_fromUtf8("KeyName2"))
-        self.KeyName3 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName3 = QtGui.QLineEdit(KeyEdit)
         self.KeyName3.setGeometry(QtCore.QRect(21, 115, 71, 25))
         self.KeyName3.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName3.setObjectName(_fromUtf8("KeyName3"))
-        self.KeyName4 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName4 = QtGui.QLineEdit(KeyEdit)
         self.KeyName4.setGeometry(QtCore.QRect(21, 152, 71, 25))
         self.KeyName4.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName4.setObjectName(_fromUtf8("KeyName4"))
-        self.KeyName5 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName5 = QtGui.QLineEdit(KeyEdit)
         self.KeyName5.setGeometry(QtCore.QRect(21, 189, 71, 25))
         self.KeyName5.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName5.setObjectName(_fromUtf8("KeyName5"))
-        self.KeyName6 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName6 = QtGui.QLineEdit(KeyEdit)
         self.KeyName6.setGeometry(QtCore.QRect(21, 226, 71, 25))
         self.KeyName6.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName6.setObjectName(_fromUtf8("KeyName6"))
-        self.KeyName7 = QtGui.QTextEdit(KeyEdit)
+        self.KeyName7 = QtGui.QLineEdit(KeyEdit)
         self.KeyName7.setGeometry(QtCore.QRect(21, 263, 71, 25))
         self.KeyName7.setMaximumSize(QtCore.QSize(16777215, 31))
         self.KeyName7.setObjectName(_fromUtf8("KeyName7"))
@@ -81,26 +81,26 @@ class Ui_KeyEdit(object):
         self.VirtualKey7 = QtGui.QComboBox(KeyEdit)
         self.VirtualKey7.setGeometry(QtCore.QRect(130, 263, 69, 25))
         self.VirtualKey7.setObjectName(_fromUtf8("VirtualKey7"))
-        self.SendMsg1 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg1 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg1.setGeometry(QtCore.QRect(313, 40, 161, 25))
         self.SendMsg1.setObjectName(_fromUtf8("SendMsg1"))
-        self.SendMsg2 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg2 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg2.setGeometry(QtCore.QRect(313, 78, 161, 25))
         self.SendMsg2.setObjectName(_fromUtf8("SendMsg2"))
-        self.SendMsg3 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg3 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg3.setGeometry(QtCore.QRect(313, 115, 161, 25))
         self.SendMsg3.setAutoFillBackground(False)
         self.SendMsg3.setObjectName(_fromUtf8("SendMsg3"))
-        self.SendMsg4 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg4 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg4.setGeometry(QtCore.QRect(313, 152, 161, 25))
         self.SendMsg4.setObjectName(_fromUtf8("SendMsg4"))
-        self.SendMsg5 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg5 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg5.setGeometry(QtCore.QRect(313, 189, 161, 25))
         self.SendMsg5.setObjectName(_fromUtf8("SendMsg5"))
-        self.SendMsg6 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg6 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg6.setGeometry(QtCore.QRect(313, 226, 161, 25))
         self.SendMsg6.setObjectName(_fromUtf8("SendMsg6"))
-        self.SendMsg7 = QtGui.QTextEdit(KeyEdit)
+        self.SendMsg7 = QtGui.QLineEdit(KeyEdit)
         self.SendMsg7.setGeometry(QtCore.QRect(313, 263, 161, 25))
         self.SendMsg7.setObjectName(_fromUtf8("SendMsg7"))
         self.layoutWidget = QtGui.QWidget(KeyEdit)
@@ -157,76 +157,15 @@ class Ui_KeyEdit(object):
 
     def retranslateUi(self, KeyEdit):
         KeyEdit.setWindowTitle(_translate("KeyEdit", "Dialog", None))
-        self.KeyName1.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Exit</p></body></html>", None))
-        self.KeyName2.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Minus</p></body></html>", None))
-        self.KeyName3.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Plus</p></body></html>", None))
-        self.KeyName4.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Menu</p></body></html>", None))
-        self.KeyName5.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Power</p></body></html>", None))
-        self.KeyName6.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Source</p></body></html>", None))
-        self.KeyName7.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Factory</p></body></html>", None))
-        self.SendMsg1.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg2.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg3.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg4.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg5.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg6.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.SendMsg7.setHtml(_translate("KeyEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+
+        self.KeyName1.setText(_translate("KeyEdit","Dialog",None))
+        self.KeyName2.setText(_translate("KeyEdit", "Dialog", None))
+        self.KeyName3.setText(_translate("KeyEdit", "Dialog", None))
+        self.KeyName4.setText(_translate("KeyEdit", "Dialog", None))
+        self.KeyName5.setText(_translate("KeyEdit", "Dialog", None))
+        self.KeyName6.setText(_translate("KeyEdit", "Dialog", None))
+        self.KeyName7.setText(_translate("KeyEdit", "Dialog", None))
+
         self.label.setText(_translate("KeyEdit", "按键名称", None))
         self.label_2.setText(_translate("KeyEdit", "虚拟key", None))
         self.label_3.setText(_translate("KeyEdit", "自定义", None))

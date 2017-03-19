@@ -1,6 +1,6 @@
 class KeyMsg(object):
     def __init__(self):
-        self.isCustomize = 0
+        self.isCustomize = False
 
     def setName(self,name):
         self.name = name
@@ -15,9 +15,15 @@ class KeyMsg(object):
         self.isCustomize = num
 
     #Get methond
+    def isCustomizeOrnot(self):
+        return True if self.isCustomize else False
+
     def getName(self):
         return self.name
 
     def getEntityKey(self):
         return self.EntityKey
+
+    def getContent(self):
+        return self.Content
 

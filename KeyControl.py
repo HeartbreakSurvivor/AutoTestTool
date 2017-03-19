@@ -13,10 +13,22 @@ Keymsg_7 = KeyMsg()
 
 KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
 class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
     def __init__(self,parent=None):
         super().__init__(parent)
         self.setupUi(self)
+
+        self.VirtualKeylist = ["A","B","C","D","E","F",
+                               "G","H", "I", "J", "K", "L",
+                               "M","N", "O", "P", "Q", "R",
+                               "S","T", "U", "V", "W", "X",
+                               "Y","Z"]
 
         self.__KeyName = [self.KeyName1,self.KeyName2,self.KeyName3,self.KeyName4,
                               self.KeyName5,self.KeyName6,self.KeyName7]
@@ -35,8 +47,26 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
         self.KeyCustome6.connect(self.KeyCustome6, QtCore.SIGNAL('clicked()'), self.IsCustomized)
         self.KeyCustome7.connect(self.KeyCustome7, QtCore.SIGNAL('clicked()'), self.IsCustomized)
 
+        for i in range(self.VirtualKeylist.__len__()):
+            for j in range(self.__VirtualKey.__len__()):
+                self.__VirtualKey[j].insertItem(i, self.VirtualKeylist[i])
+
+        for i in range(KeyMessage.__len__()):
+            self.__KeyName[i].setText(_fromUtf8(KeyMessage[i].getName()))
+            self.__KeyName[i].setMaxLength(10)
+            self.__KeyName[i].setAlignment(QtCore.Qt.AlignCenter)
+
+            if KeyMessage[i].isCustomizeOrnot():
+                self.__Customize[i].setChecked(True)
+
+            print(_fromUtf8(KeyMessage[i].getName()))
+            if KeyMessage[i].getContent():
+                self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
+
+            self.__VirtualKey[i].setCurrentIndex(8)#_fromUtf8(KeyMessage[i].getEntityKey()))
+
     def IsCustomized(self):
-        for i in range(0,self.__Customize.__len__()):
+        for i in range(self.__Customize.__len__()):
             if self.__Customize[i].isChecked():
                 KeyMessage[i].isCustomize = 1
                 self.__Content[i].setReadOnly(True)
@@ -45,7 +75,7 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
                 self.__Content[i].setReadOnly(False)
 
     def GetEntityKey(self):
-        for i in range(0,self.__VirtualKey.__len__()):
+        for i in range(self.__VirtualKey.__len__()):
             if self.__VirtualKey.count(self.__VirtualKey[i].CurrentText()) > 1:
                 QtGui.QMessageBox.information(self, "Tips", "定义了相同的按键")
                 break
@@ -53,14 +83,13 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
                 KeyMessage.setEntityKey(self.__VirtualKey[i].CurrentText())
 
     def GetSendMsg(self):
-        TempMsg = ""
-        for i in range(0,self.__Content.__len__()):
+        for i in range(self.__Content.__len__()):
             if self.__Customize[i].isChecked():
                 TempMsg = self.__Content[i].text()
                 KeyMessage[i].setContent(TempMsg)
 
     def GetKeyName(self):
-        for i in range(0,self.__KeyName.__len__()):
+        for i in range(self.__KeyName.__len__()):
             #if self.__KeyName[i].Length() >= 10:
             #    print("what's time")
             KeyMessage[i].setName(self.__KeyName[i].text())
