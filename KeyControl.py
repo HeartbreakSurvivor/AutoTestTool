@@ -2,14 +2,15 @@ from PyQt4 import QtCore, QtGui
 from KeyMsg import KeyMsg
 from keyedit import Ui_KeyEdit
 
-global Keymsg_1 , Keymsg_2 , Keymsg_3 , Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
-Keymsg_1 = KeyMsg()
-Keymsg_2 = KeyMsg()
-Keymsg_3 = KeyMsg()
-Keymsg_4 = KeyMsg()
-Keymsg_5 = KeyMsg()
-Keymsg_6 = KeyMsg()
-Keymsg_7 = KeyMsg()
+"""the Model--the MVC pattern"""
+global Keymsg_1 , Keymsg_2 , Keymsg_3 ,Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
+Keymsg_1 = KeyMsg("Exit","G","",0)
+Keymsg_2 = KeyMsg("Minus","Q","",0)
+Keymsg_3 = KeyMsg("Plus","S","",0)
+Keymsg_4 = KeyMsg("Menu","D","",0)
+Keymsg_5 = KeyMsg("Power","B","",0)
+Keymsg_6 = KeyMsg("Source","X","",0)
+Keymsg_7 = KeyMsg("Factory","L","",0)
 
 KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
 
@@ -56,14 +57,16 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
             self.__KeyName[i].setMaxLength(10)
             self.__KeyName[i].setAlignment(QtCore.Qt.AlignCenter)
 
+            print(KeyMessage[i].isCustomizeOrnot())
             if KeyMessage[i].isCustomizeOrnot():
                 self.__Customize[i].setChecked(True)
 
-            print(_fromUtf8(KeyMessage[i].getName()))
             if KeyMessage[i].getContent():
                 self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
 
-            self.__VirtualKey[i].setCurrentIndex(8)#_fromUtf8(KeyMessage[i].getEntityKey()))
+            for j in range(26):
+                if KeyMessage[i].getEntityKey() == self.VirtualKeylist[j]:
+                    self.__VirtualKey[i].setCurrentIndex(j)
 
     def IsCustomized(self):
         for i in range(self.__Customize.__len__()):

@@ -1,6 +1,9 @@
 class KeyMsg(object):
-    def __init__(self):
-        self.isCustomize = False
+    def __init__(self,name,key,content,iscustomer=0):
+        self.isCustomize = iscustomer
+        self.name = name
+        self.EntityKey = key
+        self.Content = content
 
     def setName(self,name):
         self.name = name

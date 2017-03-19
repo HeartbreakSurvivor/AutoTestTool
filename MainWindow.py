@@ -142,7 +142,6 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
 
 
-
         self.menuComPort = QtGui.QMenu(self.menubar)
         self.menuComPort.setObjectName(_fromUtf8("menuComPort"))
 

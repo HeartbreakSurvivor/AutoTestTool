@@ -12,7 +12,7 @@ from serial import Serial
 import serial.tools.list_ports
 from MySerial import MySerial
 from Command import *
-from KeyControl import KeyEdit
+from KeyControl import *
 from keyedit import *
 from serial.serialutil import SerialBase, SerialException, to_bytes, portNotOpenError, writeTimeoutError
 
@@ -49,6 +49,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self._str = ""
 
         self.MainWindowInit()
+        self.WriteSettings()
         self.ReadSettings()
         self.actionMstar_9570S.setChecked(True)
 
@@ -56,15 +57,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.Signal_Slot_Init() # Setup the singal
 
         self.Command_Init()# The design pattern
-    """
-        Keymsg_1.setName("Exit")
-        Keymsg_2.setName("Minus")
-        Keymsg_3.setName("Plus")
-        Keymsg_4.setName("Menu")
-        Keymsg_5.setName("Power")
-        Keymsg_6.setName("Source")
-        Keymsg_7.setName("Factory")
-    """
 
     def MainWindowInit(self):
         self.setupUi(self)
@@ -264,20 +256,55 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
         if settings.value("Parity", "None") == "None":
             self.actionNone.setChecked(1)
-        if settings.value("Parity", "None") == "Odd":
+        elif settings.value("Parity", "None") == "Odd":
             self.actionOdd.setChecked(1)
-        if settings.value("Parity", "None") == "Even":
+        elif settings.value("Parity", "None") == "Even":
             self.actionEven.setChecked(1)
-        if settings.value("Parity", "None") == "Mark":
+        elif settings.value("Parity", "None") == "Mark":
             self.actionMark.setChecked(1)
-        if settings.value("Parity", "None") == "Space":
+        elif settings.value("Parity", "None") == "Space":
             self.actionSpace.setChecked(1)
         settings.endGroup()
+
+        settings.beginGroup("KeyMsgGroup")
+        settings.beginReadArray("KeyMessage")
+        for i in range(KeyMessage.__len__()):
+            settings.setArrayIndex(i)
+            KeyMessage[i].setName(settings.value("keyname"))
+            KeyMessage[i].setCustomize(settings.value("isCustomize"))
+            KeyMessage[i].setEntityKey(settings.value("key"))
+            KeyMessage[i].setContent(settings.value("content"))
+            print(settings.value("keyname"))
+            print(settings.value("key"))
+            print(settings.value("isCustomize"))
+        settings.endArray()
+        settings.endGroup()
+
+        self.ExitButton.setText(KeyMessage[0].getName())
+        self.KeyIndicatorA.setText(KeyMessage[0].getEntityKey())
+
+        self.MinusButton.setText(KeyMessage[1].getName())
+        self.KeyIndicatorB.setText(KeyMessage[1].getEntityKey())
+
+        self.PlusButton.setText(KeyMessage[2].getName())
+        self.KeyIndicatorC.setText(KeyMessage[2].getEntityKey())
+
+        self.MenuButton.setText(KeyMessage[3].getName())
+        self.KeyIndicatorD.setText(KeyMessage[3].getEntityKey())
+
+        self.PowerButton.setText(KeyMessage[4].getName())
+        self.KeyIndicatorE.setText(KeyMessage[4].getEntityKey())
+
+        self.SourceButton.setText(KeyMessage[5].getName())
+        self.KeyIndicatorF.setText(KeyMessage[5].getEntityKey())
+
+        self.FactoryButton.setText(KeyMessage[6].getName())
+        self.KeyIndicatorG.setText(KeyMessage[6].getEntityKey())
 
     def WriteSettings(self):
         settings = QtCore.QSettings("bigzhanghao","MainWindow")
 
-        settings.setValue("ChipSet",QtCore.QVariant(self.GetChipSelect()))
+        settings.setValue("ChipSet",self.GetChipSelect())
 
         settings.beginGroup("Serial")
         settings.setValue("BaudRate",self.Serial_SetBaudRate())
@@ -286,6 +313,16 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         settings.setValue("Parity", self.Serial_SetParity())
         settings.endGroup()
 
+        settings.beginGroup("KeyMsgGroup")
+        settings.beginWriteArray("KeyMessage")
+        for i in range(KeyMessage.__len__()):
+            settings.setArrayIndex(i)
+            settings.setValue("keyname",KeyMessage[i].getName())
+            settings.setValue("isCustomize", KeyMessage[i].isCustomize)
+            settings.setValue("key", KeyMessage[i].getEntityKey())
+            settings.setValue("content", KeyMessage[i].getContent())
+        settings.endArray()
+        settings.endGroup()
     #actions
     def AddSerialPorts(self):
         self.port_list = self._serial.GetSerialPorts()
@@ -462,7 +499,8 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 elif keyEvent.key() == QtCore.Qt.Key_C:
                     self._serial.send("i ".encode())
             else:
-                QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
+                #QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
+                pass
         if event.type() == QtCore.QEvent.KeyRelease:
             pass
             #print("the up key released")
