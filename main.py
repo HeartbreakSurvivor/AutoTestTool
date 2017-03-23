@@ -43,6 +43,15 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         QtCore.QCoreApplication.setApplicationName("SerialTool")
 
         #variables definition
+        self.KeyList = [
+            QtCore.Qt.Key_A, QtCore.Qt.Key_B, QtCore.Qt.Key_C, QtCore.Qt.Key_D,
+            QtCore.Qt.Key_E, QtCore.Qt.Key_F, QtCore.Qt.Key_G, QtCore.Qt.Key_H,
+            QtCore.Qt.Key_I, QtCore.Qt.Key_J, QtCore.Qt.Key_K, QtCore.Qt.Key_L,
+            QtCore.Qt.Key_M, QtCore.Qt.Key_N, QtCore.Qt.Key_O, QtCore.Qt.Key_P,
+            QtCore.Qt.Key_Q, QtCore.Qt.Key_R, QtCore.Qt.Key_S, QtCore.Qt.Key_T,
+            QtCore.Qt.Key_U, QtCore.Qt.Key_V, QtCore.Qt.Key_W, QtCore.Qt.Key_X,
+            QtCore.Qt.Key_Y, QtCore.Qt.Key_Z]
+
         self.portlist = []
         self.__CommandList = []
         self._serial = MySerial()
@@ -64,7 +73,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.installEventFilter(self)
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.Receive)
-        pass
 
     def Signal_Slot_Init(self):
         self.ExitButton.connect(self.ExitButton, QtCore.SIGNAL('clicked()'), self.ExitKey)
@@ -480,24 +488,30 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def FactoryKey(self):
         self.Execute(self.__FactoryCmd)
 
+    def GetSettingKey(self,index):
+        for i in range(VirtualKeylist.__len__()):
+            if KeyMessage[index].getEntityKey() == VirtualKeylist[i]:
+                return self.KeyList[i]
+
     def eventFilter(self, watched, event):
         if event.type() == QtCore.QEvent.KeyPress:
             keyEvent = QtGui.QKeyEvent(event)
             if self._serial.isOpen():
-                if keyEvent.key() == QtCore.Qt.Key_W:
+                if keyEvent.key() == self.GetSettingKey(0):
                     self.Execute(self.__ExitCmd)
-                elif keyEvent.key() == QtCore.Qt.Key_S:
-                    self.Execute(self.__MenuCmd)
-                elif keyEvent.key() == QtCore.Qt.Key_A:
+                elif keyEvent.key() == self.GetSettingKey(1):
                     self.Execute(self.__MinusCmd)
-                elif keyEvent.key() == QtCore.Qt.Key_D:
+                elif keyEvent.key() == self.GetSettingKey(2):
                     self.Execute(self.__PlusCmd)
-                elif keyEvent.key() == QtCore.Qt.Key_Z:
-                    self._serial.send("iv ".encode())
-                elif keyEvent.key() == QtCore.Qt.Key_X:
-                    self._serial.send("iu".encode())
-                elif keyEvent.key() == QtCore.Qt.Key_C:
-                    self._serial.send("i ".encode())
+                elif keyEvent.key() == self.GetSettingKey(3):
+                    self.Execute(self.__MenuCmd)
+                elif keyEvent.key() == self.GetSettingKey(4):
+                    self.Execute(self.__PowerCmd)
+                elif keyEvent.key() == self.GetSettingKey(5):
+                    self.Execute(self.__SourceCmd)
+                elif keyEvent.key() == self.GetSettingKey(6):
+                    self.Execute(self.__FactoryCmd)
+                    #self._serial.send("i ".encode())
             else:
                 #QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
                 pass

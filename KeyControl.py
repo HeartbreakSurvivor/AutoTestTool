@@ -14,6 +14,11 @@ Keymsg_7 = KeyMsg("Factory","L","",0)
 
 KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
 
+VirtualKeylist = ["A", "B", "C", "D", "E", "F",
+                       "G", "H", "I", "J", "K", "L",
+                       "M", "N", "O", "P", "Q", "R",
+                       "S", "T", "U", "V", "W", "X",
+                       "Y", "Z"]
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -24,12 +29,6 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
     def __init__(self,parent=None):
         super().__init__(parent)
         self.setupUi(self)
-
-        self.VirtualKeylist = ["A","B","C","D","E","F",
-                               "G","H", "I", "J", "K", "L",
-                               "M","N", "O", "P", "Q", "R",
-                               "S","T", "U", "V", "W", "X",
-                               "Y","Z"]
 
         self.__KeyName = [self.KeyName1,self.KeyName2,self.KeyName3,self.KeyName4,
                               self.KeyName5,self.KeyName6,self.KeyName7]
@@ -48,9 +47,9 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
         self.KeyCustome6.connect(self.KeyCustome6, QtCore.SIGNAL('clicked()'), self.IsCustomized)
         self.KeyCustome7.connect(self.KeyCustome7, QtCore.SIGNAL('clicked()'), self.IsCustomized)
 
-        for i in range(self.VirtualKeylist.__len__()):
+        for i in range(VirtualKeylist.__len__()):
             for j in range(self.__VirtualKey.__len__()):
-                self.__VirtualKey[j].insertItem(i, self.VirtualKeylist[i])
+                self.__VirtualKey[j].insertItem(i, VirtualKeylist[i])
 
         for i in range(KeyMessage.__len__()):
             self.__KeyName[i].setText(_fromUtf8(KeyMessage[i].getName()))
@@ -65,8 +64,17 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
                 self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
 
             for j in range(26):
-                if KeyMessage[i].getEntityKey() == self.VirtualKeylist[j]:
+                if KeyMessage[i].getEntityKey() == VirtualKeylist[j]:
                     self.__VirtualKey[i].setCurrentIndex(j)
+
+        #self.GetEntityKey()
+    #
+    def closeEvent(self,QCloseEvent):
+        print("close the window")
+        self.IsCustomized()
+        self.GetEntityKey()
+        self.GetKeyName()
+        self.GetSendMsg()
 
     def IsCustomized(self):
         for i in range(self.__Customize.__len__()):
@@ -79,11 +87,11 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
 
     def GetEntityKey(self):
         for i in range(self.__VirtualKey.__len__()):
-            if self.__VirtualKey.count(self.__VirtualKey[i].CurrentText()) > 1:
+            if self.__VirtualKey.count(self.__VirtualKey[i].currentText()) > 1:
                 QtGui.QMessageBox.information(self, "Tips", "定义了相同的按键")
                 break
-            if self.__VirtualKey[i].CurrentText() is not None:
-                KeyMessage.setEntityKey(self.__VirtualKey[i].CurrentText())
+            if self.__VirtualKey[i].currentText() is not None:
+                KeyMessage[i].setEntityKey(self.__VirtualKey[i].currentText())
 
     def GetSendMsg(self):
         for i in range(self.__Content.__len__()):

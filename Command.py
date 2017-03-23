@@ -39,4 +39,5 @@ class FactoryCommand(command):
 
 class SourceCommand(command):
     def execute(self):
+        self._serial.send("iu".encode())
         print("this is Source command")
