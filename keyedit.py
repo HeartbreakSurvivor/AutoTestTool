@@ -151,7 +151,7 @@ class Ui_KeyEdit(object):
         self.KeyCustome7.setObjectName(_fromUtf8("KeyCustome7"))
 
         self.retranslateUi(KeyEdit)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), KeyEdit.accept)
+        #QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), KeyEdit.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), KeyEdit.reject)
         QtCore.QMetaObject.connectSlotsByName(KeyEdit)
 

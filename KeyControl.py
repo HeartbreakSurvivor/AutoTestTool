@@ -1,6 +1,8 @@
 from PyQt4 import QtCore, QtGui
 from KeyMsg import KeyMsg
 from keyedit import Ui_KeyEdit
+from main import MainWindow
+from MainWindow import Ui_MainWindow
 
 """the Model--the MVC pattern"""
 global Keymsg_1 , Keymsg_2 , Keymsg_3 ,Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
@@ -47,6 +49,12 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
         self.KeyCustome6.connect(self.KeyCustome6, QtCore.SIGNAL('clicked()'), self.IsCustomized)
         self.KeyCustome7.connect(self.KeyCustome7, QtCore.SIGNAL('clicked()'), self.IsCustomized)
 
+        #self.buttonBox.connect(self.buttonBox, QtCore.SIGNAL('clicked()'), self.closeEvent)
+        #self.buttonBox.accepted.connect(self.closeEvent)
+        #self.buttonBox.rejected.connect(self.closeEvent)
+        #QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")),self.closeEvent)
+        self.buttonBox.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")),self.savesettings)
+
         for i in range(VirtualKeylist.__len__()):
             for j in range(self.__VirtualKey.__len__()):
                 self.__VirtualKey[j].insertItem(i, VirtualKeylist[i])
@@ -59,31 +67,41 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
             print(KeyMessage[i].isCustomizeOrnot())
             if KeyMessage[i].isCustomizeOrnot():
                 self.__Customize[i].setChecked(True)
-
-            if KeyMessage[i].getContent():
-                self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
+                if KeyMessage[i].getContent():
+                    self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
+            else:
+                self.__Customize[i].setChecked(False)
+                if KeyMessage[i].getContent():
+                    self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
+                self.__Content[i].setReadOnly(True)
 
             for j in range(26):
                 if KeyMessage[i].getEntityKey() == VirtualKeylist[j]:
                     self.__VirtualKey[i].setCurrentIndex(j)
 
         #self.GetEntityKey()
-    #
-    def closeEvent(self,QCloseEvent):
-        print("close the window")
+    def savesettings(self):
+        print("close the wssindow")
         self.IsCustomized()
         self.GetEntityKey()
         self.GetKeyName()
         self.GetSendMsg()
 
+        self.close()
+
+    def closeEvent(self,QCloseEvent):
+        pass
+        #print("close the window")
+        #MainWindow.ApplytheKeySettings()
+
     def IsCustomized(self):
         for i in range(self.__Customize.__len__()):
             if self.__Customize[i].isChecked():
                 KeyMessage[i].isCustomize = 1
-                self.__Content[i].setReadOnly(True)
+                self.__Content[i].setReadOnly(False)
             else:
                 KeyMessage[i].isCustomize = 0
-                self.__Content[i].setReadOnly(False)
+                self.__Content[i].setReadOnly(True)
 
     def GetEntityKey(self):
         for i in range(self.__VirtualKey.__len__()):

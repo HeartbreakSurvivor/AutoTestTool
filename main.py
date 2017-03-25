@@ -214,12 +214,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         return self._serial.parity
 
     def Edit_VirtualKey(self):
-        print("open a new dialog")
-
-        #tempDialog = QtGui.QDialog()
-        #_editkey = Ui_KeyEdit()  # KeyEdit(KeyEditDialog)
-        #_editkey.setupUi(tempDialog)
-
         KeyEditDialog = KeyEdit(self)  #QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
         KeyEditDialog.setModal(True)# set the new dialog with modal
         KeyEditDialog.show()
@@ -227,6 +221,29 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         #KeyEditDialog = KeyEdit()
         #Ui_KeyEdit.setupUi(self,KeyEdit)
         #KeyEditDialog.show()
+
+    def ApplytheKeySettings(self):
+        self.ExitButton.setText(KeyMessage[0].getName())
+        self.KeyIndicatorA.setText(KeyMessage[0].getEntityKey())
+
+        self.MinusButton.setText(KeyMessage[1].getName())
+        self.KeyIndicatorB.setText(KeyMessage[1].getEntityKey())
+
+        self.PlusButton.setText(KeyMessage[2].getName())
+        self.KeyIndicatorC.setText(KeyMessage[2].getEntityKey())
+
+        self.MenuButton.setText(KeyMessage[3].getName())
+        self.KeyIndicatorD.setText(KeyMessage[3].getEntityKey())
+
+        self.PowerButton.setText(KeyMessage[4].getName())
+        self.KeyIndicatorE.setText(KeyMessage[4].getEntityKey())
+
+        self.SourceButton.setText(KeyMessage[5].getName())
+        self.KeyIndicatorF.setText(KeyMessage[5].getEntityKey())
+
+        self.FactoryButton.setText(KeyMessage[6].getName())
+        self.KeyIndicatorG.setText(KeyMessage[6].getEntityKey())
+
 
     def ReadSettings(self):
         settings = QtCore.QSettings("bigzhanghao","MainWindow")
@@ -288,26 +305,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         settings.endArray()
         settings.endGroup()
 
-        self.ExitButton.setText(KeyMessage[0].getName())
-        self.KeyIndicatorA.setText(KeyMessage[0].getEntityKey())
-
-        self.MinusButton.setText(KeyMessage[1].getName())
-        self.KeyIndicatorB.setText(KeyMessage[1].getEntityKey())
-
-        self.PlusButton.setText(KeyMessage[2].getName())
-        self.KeyIndicatorC.setText(KeyMessage[2].getEntityKey())
-
-        self.MenuButton.setText(KeyMessage[3].getName())
-        self.KeyIndicatorD.setText(KeyMessage[3].getEntityKey())
-
-        self.PowerButton.setText(KeyMessage[4].getName())
-        self.KeyIndicatorE.setText(KeyMessage[4].getEntityKey())
-
-        self.SourceButton.setText(KeyMessage[5].getName())
-        self.KeyIndicatorF.setText(KeyMessage[5].getEntityKey())
-
-        self.FactoryButton.setText(KeyMessage[6].getName())
-        self.KeyIndicatorG.setText(KeyMessage[6].getEntityKey())
+        self.ApplytheKeySettings()
 
     def WriteSettings(self):
         settings = QtCore.QSettings("bigzhanghao","MainWindow")
