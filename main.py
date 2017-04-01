@@ -87,7 +87,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
         self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
         self.HexSendcheckBox_2.connect(self.HexSendcheckBox_2, QtCore.SIGNAL('clicked()'), self.SendHex)
-        self.SaveDataButton.connect(self.SaveDataButton, QtCore.SIGNAL('clicked()'), self.SaveAs)
+        self.SaveDataButton.connect(self.SaveDataButton, QtCore.SIGNAL('clicked()'), self.Pause)
 
         self.actionMstar_9570S.connect(self.actionMstar_9570S, QtCore.SIGNAL('triggered()'), self.SelectChip)
         self.actionRealTek.connect(self.actionRealTek, QtCore.SIGNAL('triggered()'), self.SelectChip)
@@ -144,7 +144,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def Execute(self,Command):
         if Command in self.__CommandList:
             Idx = self.__CommandList.index(Command)
-            print(Idx)
             #Command.execute(self)
             self.__CommandList[Idx].execute()
 
@@ -216,7 +215,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def Edit_VirtualKey(self):
         KeyEditDialog = KeyEdit(self)  #QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
         KeyEditDialog.setModal(True)# set the new dialog with modal
-        KeyEditDialog.show()
+        #KeyEditDialog.show()
+        KeyEditDialog.exec_() #notice the difference of the show() and exec_(),the exec_() will wait until the user close the window
+        self.ApplytheKeySettings()
 
         #KeyEditDialog = KeyEdit()
         #Ui_KeyEdit.setupUi(self,KeyEdit)
@@ -457,9 +458,8 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             self.textEdit.clear()
             self.textEdit.setText(self._str)
 
-    def SaveAs(self):
-        self.DataToSend.clear()
-        if self.HexSendcheckBox.isChecked():#check
+    def Pause(self):
+        if self.SaveDataButton.isChecked():
             print("Send Hex checked")
         else:# cancel check
             print("Send Hex no checked")
@@ -509,13 +509,11 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                     self.Execute(self.__SourceCmd)
                 elif keyEvent.key() == self.GetSettingKey(6):
                     self.Execute(self.__FactoryCmd)
-                    #self._serial.send("i ".encode())
             else:
                 #QtGui.QMessageBox.information(self, "Tips", "请先打开串口")
                 pass
         if event.type() == QtCore.QEvent.KeyRelease:
             pass
-            #print("the up key released")
         return QtGui.QWidget.eventFilter(self, watched, event)
 
 

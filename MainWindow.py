@@ -126,6 +126,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_9 = QtGui.QVBoxLayout()
         self.verticalLayout_9.setObjectName(_fromUtf8("verticalLayout_9"))
         self.SaveDataButton = QtGui.QPushButton(self.layoutWidget)
+        self.SaveDataButton.setChecked(True)
         self.SaveDataButton.setObjectName(_fromUtf8("SaveDataButton"))
         self.verticalLayout_9.addWidget(self.SaveDataButton)
         self.HexSendcheckBox_2 = QtGui.QCheckBox(self.layoutWidget)
@@ -328,7 +329,7 @@ class Ui_MainWindow(object):
         self.KeyIndicatorG.setText(_translate("MainWindow", "C", None))
         self.ClearDataButton.setText(_translate("MainWindow", "清除", None))
         self.HexDisCheckbox.setText(_translate("MainWindow", "HEX显示", None))
-        self.SaveDataButton.setText(_translate("MainWindow", "保存", None))
+        self.SaveDataButton.setText(_translate("MainWindow", "暂停", None))
         self.HexSendcheckBox_2.setText(_translate("MainWindow", "HEX发送", None))
         self.menuComPort.setTitle(_translate("MainWindow", "COM Port", None))
 
