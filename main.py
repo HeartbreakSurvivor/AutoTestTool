@@ -80,9 +80,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.MenuButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.MenuKey)
         self.MinusButton.connect(self.MinusButton, QtCore.SIGNAL('clicked()'), self.MinusKey)
         self.PlusButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.PlusKey)
-        self.PowerButton.connect(self.MenuButton, QtCore.SIGNAL('clicked()'), self.PowerKey)
-        self.SourceButton.connect(self.MinusButton, QtCore.SIGNAL('clicked()'), self.SourceKey)
-        self.FactoryButton.connect(self.PlusButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
+        self.PowerButton.connect(self.PowerButton, QtCore.SIGNAL('clicked()'), self.PowerKey)
+        self.SourceButton.connect(self.SourceButton, QtCore.SIGNAL('clicked()'), self.SourceKey)
+        self.FactoryButton.connect(self.FactoryButton, QtCore.SIGNAL('clicked()'), self.FactoryKey)
 
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
         self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
@@ -128,16 +128,14 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.__PowerCmd = PowerCommand(self._serial)
         self.__PlusCmd = PlusCommand(self._serial)
         self.__MinusCmd = MinusCommand(self._serial)
-        self.__EcoCmd = EcoCommand(self._serial)
         self.__SourceCmd = SourceCommand(self._serial)
         self.__FactoryCmd = FactoryCommand(self._serial)
 
-        self.SetCommands(self.__MenuCmd)
-        self.SetCommands(self.__MinusCmd)
         self.SetCommands(self.__ExitCmd)
-        self.SetCommands(self.__PowerCmd)
+        self.SetCommands(self.__MinusCmd)
         self.SetCommands(self.__PlusCmd)
-        self.SetCommands(self.__EcoCmd)
+        self.SetCommands(self.__MenuCmd)
+        self.SetCommands(self.__PowerCmd)
         self.SetCommands(self.__SourceCmd)
         self.SetCommands(self.__FactoryCmd)
 
@@ -146,7 +144,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         if Command in self.__CommandList:
             Idx = self.__CommandList.index(Command)
             #Command.execute(self)
-            self.__CommandList[Idx].execute()
+            self.__CommandList[Idx].execute(KeyMessage[Idx])
 
     def SelectChip(self):
         if self.GetChipSelect():
@@ -472,11 +470,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 #            temphex = hexshow(self._str)
             self.textEdit.clear()
 #            self.textEdit.setText(temphex)
-            print("hhhhh")
         else:#cancel check
             self.textEdit.clear()
             self.textEdit.setText(self._str)
-            print("hhhasdasdshh")
 
     def SendHex(self):
         if self.HexSendcheckBox_2.isChecked():#check

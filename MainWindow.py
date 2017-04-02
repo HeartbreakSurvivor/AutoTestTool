@@ -253,7 +253,6 @@ class Ui_MainWindow(object):
         self.BaudRateGroup.addAction(self.action57600)
         self.BaudRateGroup.addAction(self.action115200)
 
-
         self.menuData_Bits.addAction(self.action5)
         self.menuData_Bits.addAction(self.action6)
         self.menuData_Bits.addAction(self.action7)

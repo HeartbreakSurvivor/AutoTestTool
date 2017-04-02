@@ -65,6 +65,7 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
             self.__KeyName[i].setAlignment(QtCore.Qt.AlignCenter)
 
             print(KeyMessage[i].isCustomizeOrnot())
+
             if KeyMessage[i].isCustomizeOrnot():
                 self.__Customize[i].setChecked(True)
                 if KeyMessage[i].getContent():
@@ -82,7 +83,7 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
         #self.GetEntityKey()
     def savesettings(self):
         print("close the wssindow")
-        self.IsCustomized()
+        #self.IsCustomized()
         self.GetKeyName()
         self.GetSendMsg()
         if not self.GetEntityKey():
@@ -96,11 +97,12 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
     def IsCustomized(self):
         for i in range(self.__Customize.__len__()):
             if self.__Customize[i].isChecked():
-                KeyMessage[i].isCustomize = 1
+                KeyMessage[i].setCustomize(1)
                 self.__Content[i].setReadOnly(False)
             else:
-                KeyMessage[i].isCustomize = 0
+                KeyMessage[i].setCustomize(0)
                 self.__Content[i].setReadOnly(True)
+            print (KeyMessage[i].isCustomize)
 
     def GetEntityKey(self):
         Textlist = [self.__VirtualKey[x].currentText() for x in range(self.__VirtualKey.__len__())]
