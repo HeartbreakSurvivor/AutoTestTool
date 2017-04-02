@@ -55,6 +55,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.portlist = []
         self.__CommandList = []
         self._serial = MySerial()
+        self.isopen = 0
         self._str = ""
 
         self.MainWindowInit()
@@ -361,6 +362,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             try:
                 self._serial.close()
                 self.timer.stop()
+                self.isopen = 0
                 self.menuConnect.setText(_translate("MainWindow", "ComPort Connect", None))
                 self.PortList.setEnabled(True)
                 self.menuBaudRates.setEnabled(True)
@@ -373,10 +375,10 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         else:
             try:
                 portnumber = self.GetCurrentPortNumber()
-                print(portnumber)
                 self._serial.port = portnumber #self.GetCurrentPortNumber()# "COM1"
                 self._serial.open()
                 self.timer.start(30)
+                self.isopen = 1
                 self.menuConnect.setText(_translate("MainWindow", "ComPort DisConnect", None))
                     #self.menuComPort.setEnabled(False)
                 self.PortList.setEnabled(False)
@@ -449,24 +451,35 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             # print("hexshow: ", result)
         return result
 
+    def Pause(self):
+        if self.isopen:
+            if self._serial.is_open:
+                self._serial.close()
+                self.timer.stop()
+                self.SaveDataButton.setText(_translate("MainWindow", "开始", None))
+            else:
+                portnumber = self.GetCurrentPortNumber()
+                self._serial.port = portnumber #self.GetCurrentPortNumber()# "COM1"
+                self._serial.open()
+                self.timer.start(30)
+                self.SaveDataButton.setText(_translate("MainWindow", "暂停", None))
+        else:
+            print ("please open the serial")
+            pass
+
     def DisHex(self):
         if self.HexDisCheckbox.isChecked():#check
-            temphex = hexshow(self._str)
+#            temphex = hexshow(self._str)
             self.textEdit.clear()
-            self.textEdit.setText(temphex)
+#            self.textEdit.setText(temphex)
+            print("hhhhh")
         else:#cancel check
             self.textEdit.clear()
             self.textEdit.setText(self._str)
-
-    def Pause(self):
-        if self.SaveDataButton.isChecked():
-            print("Send Hex checked")
-        else:# cancel check
-            print("Send Hex no checked")
+            print("hhhasdasdshh")
 
     def SendHex(self):
-        self.DataToSend.clear()
-        if self.HexSendcheckBox.isChecked():#check
+        if self.HexSendcheckBox_2.isChecked():#check
             print("Send Hex checked")
         else:# cancel check
             print("Send Hex no checked")
@@ -516,11 +529,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             pass
         return QtGui.QWidget.eventFilter(self, watched, event)
 
-
 if __name__ == "__main__":
-    print(__name__)
-    print(__author__)
-    print(__version__)
     app = QtGui.QApplication(sys.argv)
     ui = MainWindow()
     ui.show()

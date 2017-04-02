@@ -29,7 +29,7 @@ class Ui_KeyEdit(object):
         self.buttonBox = QtGui.QDialogButtonBox(KeyEdit)
         self.buttonBox.setGeometry(QtCore.QRect(300, 290, 171, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.KeyName1 = QtGui.QLineEdit(KeyEdit)
         self.KeyName1.setEnabled(True)

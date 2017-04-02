@@ -83,15 +83,14 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
     def savesettings(self):
         print("close the wssindow")
         self.IsCustomized()
-        self.GetEntityKey()
         self.GetKeyName()
         self.GetSendMsg()
-
+        if not self.GetEntityKey():
+            return
         self.close()
 
     def closeEvent(self,QCloseEvent):
         pass
-        #print("close the window")
         #MainWindow.ApplytheKeySettings()
 
     def IsCustomized(self):
@@ -104,12 +103,16 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
                 self.__Content[i].setReadOnly(True)
 
     def GetEntityKey(self):
+        Textlist = [self.__VirtualKey[x].currentText() for x in range(self.__VirtualKey.__len__())]
         for i in range(self.__VirtualKey.__len__()):
-            if self.__VirtualKey.count(self.__VirtualKey[i].currentText()) > 1:
+            if Textlist.count(self.__VirtualKey[i].currentText()) > 1:
                 QtGui.QMessageBox.information(self, "Tips", "定义了相同的按键")
-                break
-            if self.__VirtualKey[i].currentText() is not None:
+                #Textlist = [self.__VirtualKey[x].currentText() for x in range(self.__VirtualKey.__len__())]
+                return False
+            else:
                 KeyMessage[i].setEntityKey(self.__VirtualKey[i].currentText())
+        #list = [KeyMessage[x].getEntityKey() for x in range(KeyMessage.__len__())]
+        return True
 
     def GetSendMsg(self):
         for i in range(self.__Content.__len__()):
