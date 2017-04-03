@@ -86,8 +86,8 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
         self.SendDataButton.connect(self.SendDataButton, QtCore.SIGNAL('clicked()'), self.Send)
         self.ClearDataButton.connect(self.ClearDataButton, QtCore.SIGNAL('clicked()'), self.Clear)
-        self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
-        self.HexSendcheckBox_2.connect(self.HexSendcheckBox_2, QtCore.SIGNAL('clicked()'), self.SendHex)
+        #self.HexDisCheckbox.connect(self.HexDisCheckbox,QtCore.SIGNAL('clicked()'),self.DisHex)
+        #self.HexSendcheckBox_2.connect(self.HexSendcheckBox_2, QtCore.SIGNAL('clicked()'), self.SendHex)
         self.SaveDataButton.connect(self.SaveDataButton, QtCore.SIGNAL('clicked()'), self.Pause)
 
         self.actionMstar_9570S.connect(self.actionMstar_9570S, QtCore.SIGNAL('triggered()'), self.SelectChip)
@@ -172,13 +172,10 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def Serial_SetDataBit(self):
         if self.action5.isChecked():
             self._serial.bytesize = 5
-            print("5")
         elif self.action6.isChecked():
             self._serial.bytesize = 6
-            print("6")
         elif self.action7.isChecked():
             self._serial.bytesize = 7
-            print("7")
         elif self.action8.isChecked():
             self._serial.bytesize = 8
         return self._serial.bytesize
@@ -186,30 +183,30 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
     def Serial_SetStopBit(self):
         if self.action1.isChecked():
             self._serial.stopbits = 1
-            print("1")
         elif self.action1_5.isChecked():
             self._serial.stopbits = 1.5
-            print("1.5")
         elif self.action3.isChecked():
             self._serial.stopbits = 2
         return self._serial.stopbits
 
     def Serial_SetParity(self):
+        tmpparity = 0
         if self.actionNone.isChecked():
             self._serial.parity = 'N'
-            print("none")
+            tmpparity = 0
         elif self.actionOdd.isChecked():
             self._serial.parity = 'O'
-            print("Odd")
+            tmpparity = 1
         elif self.actionEven.isChecked():
+            tmpparity = 2
             self._serial.parity = 'E'
-            print("even")
         elif self.actionSpace.isChecked():
+            tmpparity = 3
             self._serial.parity = 'S'
-            print("space")
         elif self.actionMark.isChecked():
+            tmpparity = 4
             self._serial.parity = 'M'
-        return self._serial.parity
+        return tmpparity #self._serial.parity
 
     def Edit_VirtualKey(self):
         KeyEditDialog = KeyEdit(self)  #QtGui.QDialog(self)# create a new dailog inherit from the parent Mainwindow
@@ -274,20 +271,21 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
         if settings.value("StopBits", 1) == 1:
             self.action1.setChecked(1)
+
         elif settings.value("StopBits", 1) == 1.5:
             self.action1_5.setChecked(1)
         elif settings.value("StopBits", 1) == 2:
             self.action3.setChecked(1)
 
-        if settings.value("Parity", "None") == "None":
+        if settings.value("Parity", 0) == 0: #"None"
             self.actionNone.setChecked(1)
-        elif settings.value("Parity", "None") == "Odd":
+        elif settings.value("Parity", 1) == 1: #"Odd"
             self.actionOdd.setChecked(1)
-        elif settings.value("Parity", "None") == "Even":
+        elif settings.value("Parity", 2) == 2: #"Even"
             self.actionEven.setChecked(1)
-        elif settings.value("Parity", "None") == "Mark":
+        elif settings.value("Parity", 3) == 3: #"Mark"
             self.actionMark.setChecked(1)
-        elif settings.value("Parity", "None") == "Space":
+        elif settings.value("Parity", 4) == 4: #"Space"
             self.actionSpace.setChecked(1)
         settings.endGroup()
 
@@ -299,9 +297,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             KeyMessage[i].setCustomize(settings.value("isCustomize"))
             KeyMessage[i].setEntityKey(settings.value("key"))
             KeyMessage[i].setContent(settings.value("content"))
-            print(settings.value("keyname"))
-            print(settings.value("key"))
-            print(settings.value("isCustomize"))
+            #print(settings.value("keyname"))
+            #print(settings.value("key"))
+            #print(settings.value("isCustomize"))
         settings.endArray()
         settings.endGroup()
 
@@ -329,6 +327,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             settings.setValue("content", KeyMessage[i].getContent())
         settings.endArray()
         settings.endGroup()
+
     #actions
     def AddSerialPorts(self):
         self.port_list = self._serial.GetSerialPorts()
@@ -395,10 +394,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             return
         else:
             try:
-                if not self.HexSendcheckBox.isChecked():
-                    self._serial.send(self.DataToSend.text().encode())
-                else:
-                    self._serial.send(self.DataToSend.text().encode())
+                self._serial.send(self.DataToSend.text().encode())
             except:
                 print("send data fail")
                 return
@@ -418,16 +414,17 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 #self._str = self.textEdit.toPlainText()
 
                 #if self.textEdit.toPlainText().__len__() > 10000:
-                if self._str.__len__() > 10000:
+                if self._str.__len__() > 100000:
                     bytesToRead = 0
                     self._str = ""
                     self.textEdit.clear()
 
-                if self.HexDisCheckbox.isChecked():
+                """if self.HexDisCheckbox.isChecked():
                     temphex = hexshow(self._str)
                     self.textEdit.setText(temphex)
                 else:
-                    self.textEdit.setText(self._str)
+                """
+                self.textEdit.setText(self._str)
             else:
                 pass
         else:
@@ -439,14 +436,14 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.DataToSend.clear()
         return
 
-    def hexshow(argv):
+    def hexshow(self,argv):
         result = ''
         hLen = len(argv)
         for i in range(hLen):
             hvol = ord(argv[i])
             hhex = '%02x' % hvol
             result += hhex + ' '
-            # print("hexshow: ", result)
+            print("hexshow: ", result)
         return result
 
     def Pause(self):
@@ -476,9 +473,12 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
     def SendHex(self):
         if self.HexSendcheckBox_2.isChecked():#check
-            print("Send Hex checked")
+            print(self.DataToSend.text())
+            str = self.DataToSend.text()
+            list = self.hexshow(str)
+            print(list)
         else:# cancel check
-            print("Send Hex no checked")
+            print(self.DataToSend.text())
 
     def ExitKey(self):
         self.Execute(self.__ExitCmd)
