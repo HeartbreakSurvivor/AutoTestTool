@@ -6,13 +6,13 @@ from MainWindow import Ui_MainWindow
 
 """the Model--the MVC pattern"""
 global Keymsg_1 , Keymsg_2 , Keymsg_3 ,Keymsg_4 , Keymsg_5 , Keymsg_6 , Keymsg_7
-Keymsg_1 = KeyMsg("Exit","G","",0)
-Keymsg_2 = KeyMsg("Minus","Q","",0)
-Keymsg_3 = KeyMsg("Plus","S","",0)
-Keymsg_4 = KeyMsg("Menu","D","",0)
-Keymsg_5 = KeyMsg("Power","B","",0)
+Keymsg_1 = KeyMsg("Exit","W","",0)
+Keymsg_2 = KeyMsg("Minus","A","",0)
+Keymsg_3 = KeyMsg("Plus","D","",0)
+Keymsg_4 = KeyMsg("Menu","S","",0)
+Keymsg_5 = KeyMsg("Power","Z","",0)
 Keymsg_6 = KeyMsg("Source","X","",0)
-Keymsg_7 = KeyMsg("Factory","L","",0)
+Keymsg_7 = KeyMsg("Factory","C","",0)
 
 KeyMessage = [Keymsg_1, Keymsg_2, Keymsg_3, Keymsg_4, Keymsg_5, Keymsg_6, Keymsg_7]
 

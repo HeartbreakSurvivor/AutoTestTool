@@ -59,7 +59,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self._str = ""
 
         self.MainWindowInit()
-        self.WriteSettings()
+        #self.WriteSettings()
         self.ReadSettings()
         self.actionMstar_9570S.setChecked(True)
 
@@ -297,9 +297,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             KeyMessage[i].setCustomize(settings.value("isCustomize"))
             KeyMessage[i].setEntityKey(settings.value("key"))
             KeyMessage[i].setContent(settings.value("content"))
-            #print(settings.value("keyname"))
-            #print(settings.value("key"))
-            #print(settings.value("isCustomize"))
+            print(settings.value("keyname"))
+            print(settings.value("key"))
+            print(settings.value("isCustomize"))
         settings.endArray()
         settings.endGroup()
 
@@ -341,7 +341,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 self.PortList.addAction(self.tempName)
                 self.PortActionGroup.addAction(self.tempName)
                 self.portlist.append(self.tempName)
-                print(self.tempName.text())
+                #print(self.tempName.text())
                 #self.portlist.append(self.tempName)
             self.tempName.setChecked(True)
         else:
@@ -434,7 +434,17 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self._str = ""
         self.textEdit.clear()
         self.DataToSend.clear()
-        return
+
+        settings = QtCore.QSettings("bigzhanghao","MainWindow")
+
+        settings.beginGroup("KeyMsgGroup")
+        settings.beginReadArray("KeyMessage")
+        for i in range(KeyMessage.__len__()):
+            settings.setArrayIndex(i)
+            print(settings.value("keyname"),"---",settings.value("isCustomize"),"---",settings.value("key"),"---",settings.value("content"))
+        settings.endArray()
+        settings.endGroup()
+
 
     def hexshow(self,argv):
         result = ''
@@ -447,6 +457,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         return result
 
     def Pause(self):
+        self.WriteSettings()
         if self.isopen:
             if self._serial.is_open:
                 self._serial.close()
@@ -479,6 +490,10 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
             print(list)
         else:# cancel check
             print(self.DataToSend.text())
+
+    def closeEvent(self, QCloseEvent):
+        self.WriteSettings()
+        print ("save settings and exit")
 
     def ExitKey(self):
         self.Execute(self.__ExitCmd)
