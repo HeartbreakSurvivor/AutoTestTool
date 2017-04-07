@@ -41,7 +41,7 @@ class ExitCommand(command):
         if keymsg.isCustomize:
             self._serial.send(keymsg.getContent().encode())
         else:
-            self._serial.send("ic3".encode())
+            self._serial.send("iq%".encode())
 
 class FactoryCommand(command):
     def execute(self,keymsg):

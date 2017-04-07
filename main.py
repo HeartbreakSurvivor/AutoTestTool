@@ -56,7 +56,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.__CommandList = []
         self._serial = MySerial()
         self.isopen = 0
-        self._str = ""
 
         self.MainWindowInit()
         #self.WriteSettings()
@@ -74,6 +73,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.installEventFilter(self)
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.Receive)
+        self.textEdit.ensureCursorVisible()
 
     def Signal_Slot_Init(self):
         self.ExitButton.connect(self.ExitButton, QtCore.SIGNAL('clicked()'), self.ExitKey)
@@ -117,6 +117,7 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.actionMark.connect(self.actionMark, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
         self.actionOdd.connect(self.actionOdd, QtCore.SIGNAL('triggered()'), self.Serial_SetParity)
 
+        #self.textEdit.connect(self.textEdit,QtCore.SIGNAL('textChanged'))
     # add new command to the command list
     def SetCommands(self, Command):
         self.__CommandList.append(Command)
@@ -400,38 +401,46 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
                 return
 
     def Receive(self):
-        if self._serial.is_open:
-            try:
-                bytesToRead = self._serial.inWaiting()
-            except:
-                bytesToRead = 0
-                self.Switchserial()
-                print("error ")
-            if bytesToRead > 0:
-                self.recstr = self._serial.read(bytesToRead)
-                #self.textEdit.append(self.recstr.decode(encoding='utf-8'))
-                self._str +=(self.recstr.decode(encoding='gbk'))
-                #self._str = self.textEdit.toPlainText()
-
-                #if self.textEdit.toPlainText().__len__() > 10000:
-                if self._str.__len__() > 100000:
+        if self.isopen:#the serial is opened
+            if self._serial.is_open:
+                try:
+                    bytesToRead = self._serial.inWaiting()
+                except:
                     bytesToRead = 0
-                    self._str = ""
-                    self.textEdit.clear()
+                    self.Switchserial()
+                if bytesToRead > 0:
+                    self.recstr = self._serial.read(bytesToRead)
+                    self.textEdit.append(self.recstr.decode(encoding='utf-8'))
+                    #self._str +=(self.recstr.decode(encoding='gbk'))
+                    #self._str = self.textEdit.toPlainText()
 
-                """if self.HexDisCheckbox.isChecked():
-                    temphex = hexshow(self._str)
-                    self.textEdit.setText(temphex)
+                    #if self.textEdit.toPlainText().__len__() > 10000:
+                    #if self._str.__len__() > 100000:
+                    str = self.textEdit.toPlainText()
+                    print (str.__len__())
+                    if str.__len__() > 1000000:
+                        bytesToRead = 0
+                        self.textEdit.clear()
+
+                    """if self.HexDisCheckbox.isChecked():
+                        temphex = hexshow(self._str)
+                        self.textEdit.setText(temphex)
+                    else:
+                    """
+                    #self.textEdit.setText(self._str)
+                    #self.textEdit.append(self.recstr)
+
+                    #CurrentCursor = self.textEdit.cursorForPosition()
+                    #min = self.textEdit.verticalScrollBar().minimum()
+                    #self.textEdit.verticalScrollBar().setValue(min)
                 else:
-                """
-                self.textEdit.setText(self._str)
+                    pass
             else:
                 pass
         else:
             pass
 
     def Clear(self):
-        self._str = ""
         self.textEdit.clear()
         self.DataToSend.clear()
 
@@ -457,20 +466,27 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         return result
 
     def Pause(self):
-        self.WriteSettings()
-        if self.isopen:
-            if self._serial.is_open:
-                self._serial.close()
-                self.timer.stop()
+        if self._serial.is_open:
+            if self.isopen:
                 self.SaveDataButton.setText(_translate("MainWindow", "开始", None))
+                self.isopen = 0
+                """
+                if self._serial.is_open:
+                    self._serial.close()
+                    self.timer.stop()
+                    self.SaveDataButton.setText(_translate("MainWindow", "开始", None))
+                else:
+                    portnumber = self.GetCurrentPortNumber()
+                    self._serial.port = portnumber #self.GetCurrentPortNumber()# "COM1"
+                    self._serial.open()
+                    self.timer.start(30)
+                    self.SaveDataButton.setText(_translate("MainWindow", "暂停", None))
+                """
             else:
-                portnumber = self.GetCurrentPortNumber()
-                self._serial.port = portnumber #self.GetCurrentPortNumber()# "COM1"
-                self._serial.open()
-                self.timer.start(30)
+                self.isopen = 1
                 self.SaveDataButton.setText(_translate("MainWindow", "暂停", None))
+                pass
         else:
-            print ("please open the serial")
             pass
 
     def DisHex(self):
