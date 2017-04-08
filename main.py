@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
 import sys,binascii
@@ -6,7 +5,10 @@ import importlib
 importlib.reload(sys)
 
 from MainWindow import Ui_MainWindow
-from PyQt4 import QtCore, QtGui
+#from PyQt4 import QtCore, QtGui
+
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 from KeyMsg import KeyMsg
 from serial import Serial
 import serial.tools.list_ports
@@ -74,6 +76,9 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.Receive)
         self.textEdit.ensureCursorVisible()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("crab.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
 
     def Signal_Slot_Init(self):
         self.ExitButton.connect(self.ExitButton, QtCore.SIGNAL('clicked()'), self.ExitKey)
@@ -294,13 +299,14 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
         settings.beginReadArray("KeyMessage")
         for i in range(KeyMessage.__len__()):
             settings.setArrayIndex(i)
-            KeyMessage[i].setName(settings.value("keyname"))
-            KeyMessage[i].setCustomize(settings.value("isCustomize"))
-            KeyMessage[i].setEntityKey(settings.value("key"))
-            KeyMessage[i].setContent(settings.value("content"))
-            print(settings.value("keyname"))
+            KeyMessage[i].setName(settings.value("keyname",KeyMessage[i].getName()))
+            KeyMessage[i].setCustomize(settings.value("isCustomize",KeyMessage[i].isCustomize))
+            KeyMessage[i].setEntityKey(settings.value("key",KeyMessage[i].getEntityKey()))
+            KeyMessage[i].setContent(settings.value("content",KeyMessage[i].getContent()))
+
+            print(settings.value("keyname",KeyMessage[i].getName()))
             print(settings.value("key"))
-            print(settings.value("isCustomize"))
+            #print(settings.value("isCustomize"))
         settings.endArray()
         settings.endGroup()
 
@@ -509,7 +515,6 @@ class MainWindow(QtGui.QMainWindow,Ui_MainWindow):
 
     def closeEvent(self, QCloseEvent):
         self.WriteSettings()
-        print ("save settings and exit")
 
     def ExitKey(self):
         self.Execute(self.__ExitCmd)

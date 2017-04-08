@@ -68,13 +68,12 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
 
             if KeyMessage[i].isCustomizeOrnot():
                 self.__Customize[i].setChecked(True)
-                if KeyMessage[i].getContent():
-                    self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
             else:
                 self.__Customize[i].setChecked(False)
-                if KeyMessage[i].getContent():
-                    self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
                 self.__Content[i].setReadOnly(True)
+
+            print ("set content???")
+            self.__Content[i].setText(_fromUtf8(KeyMessage[i].getContent()))
 
             for j in range(26):
                 if KeyMessage[i].getEntityKey() == VirtualKeylist[j]:
@@ -118,9 +117,9 @@ class KeyEdit(QtGui.QDialog,Ui_KeyEdit):
 
     def GetSendMsg(self):
         for i in range(self.__Content.__len__()):
-            if self.__Customize[i].isChecked():
-                TempMsg = self.__Content[i].text()
-                KeyMessage[i].setContent(TempMsg)
+            #if self.__Customize[i].isChecked():
+            TempMsg = self.__Content[i].text()
+            KeyMessage[i].setContent(TempMsg)
 
     def GetKeyName(self):
         for i in range(self.__KeyName.__len__()):
